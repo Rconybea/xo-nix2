@@ -8,26 +8,31 @@
 
   # function: inputs -> set
   #
-  outputs = { self, nixpkgs }:
-    {
-      packages.x86_64-linux.xo_cmake =
-        let pkgs = import nixpkgs {
-              system = "x86_64-linux";
+  outputs = { self, nixpkgs } :
+    let
+      system = "x86_64-linux";
+      pkgs = import nixpkgs { inherit system; };
+    in {
+      packages.${system} = rec {
+        xo_cmake = pkgs.stdenv.mkDerivation
+          {
+            name = "xo-cmake";
+            # version = ...;
+
+            src = pkgs.fetchgit {
+              url = "https://github.com/rconybea/xo-cmake";
+              rev = "d349796363163419026d7ced0f46f3702ba4a2df";
+              sha256 = "vak8TfHbHr/lHcZEsB6qjvoVM6xTdlu9EVbQbhJwPrE=";
             };
-        in pkgs.stdenv.mkDerivation {
-          pname = "xo-cmake";
-          # version = ...;
 
-          src = pkgs.fetchgit {
-            url = "https://github.com/rconybea/xo-cmake";
-            rev = "d349796363163419026d7ced0f46f3702ba4a2df";
-            sha256 = "vak8TfHbHr/lHcZEsB6qjvoVM6xTdlu9EVbQbhJwPrE=";
+            nativeBuildInputs = with pkgs;
+              [
+                cmake
+              ];
           };
-
-          nativeBuildInputs = with pkgs;
-            [
-              cmake
-            ];
         };
+
+      default = self.packages.${system}.xo_cmake;
+      # packages.x86_64-linux.default = packages.x86_64-linux.xo_cmake;
     };
 }
