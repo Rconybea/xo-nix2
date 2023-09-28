@@ -18,7 +18,24 @@
     },
     "root": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "xo_cmake_path": "xo_cmake_path"
+      }
+    },
+    "xo_cmake_path": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1695858039,
+        "narHash": "sha256-zMe17OTJ8dnSfG2OKGEUdTZaYchnJSdZ3amJzrW7Ewg=",
+        "owner": "Rconybea",
+        "repo": "xo-cmake",
+        "rev": "f38f48943762a2bc72efd27ef1ee7dbab7ce6ee2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rconybea",
+        "repo": "xo-cmake",
+        "type": "github"
       }
     }
   },

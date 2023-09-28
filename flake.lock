@@ -19,26 +19,45 @@
     "root": {
       "inputs": {
         "nixpkgs": "nixpkgs",
-        "xo_cmake": "xo_cmake"
+        "xo_cmake": "xo_cmake",
+        "xo_cmake_path": "xo_cmake_path"
       }
     },
     "xo_cmake": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
+        ],
+        "xo_cmake_path": [
+          "xo_cmake_path"
         ]
       },
       "locked": {
-        "dir": "flakes/xo-cmake",
-        "lastModified": 1695877755,
-        "narHash": "sha256-5n0wsuzUurHA1QHDUHlbLbskvCEovBNOdNklJLsNxyA=",
-        "type": "git",
-        "url": "file:///home/roland/proj/xo-nix2?dir=flakes/xo-cmake"
+        "lastModified": 1,
+        "narHash": "sha256-DLMAlrvAv46Q5LYHo4Nkdf76ktuN5rt1nce7sNvdDhY=",
+        "path": "/nix/store/17w8wvdlgfkp2v56gq7ardb19dyz8s3s-source/flakes/xo-cmake",
+        "type": "path"
       },
       "original": {
-        "dir": "flakes/xo-cmake",
-        "type": "git",
-        "url": "file:///home/roland/proj/xo-nix2?dir=flakes/xo-cmake"
+        "path": "/nix/store/17w8wvdlgfkp2v56gq7ardb19dyz8s3s-source/flakes/xo-cmake",
+        "type": "path"
+      }
+    },
+    "xo_cmake_path": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1695858039,
+        "narHash": "sha256-zMe17OTJ8dnSfG2OKGEUdTZaYchnJSdZ3amJzrW7Ewg=",
+        "owner": "Rconybea",
+        "repo": "xo-cmake",
+        "rev": "f38f48943762a2bc72efd27ef1ee7dbab7ce6ee2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rconybea",
+        "ref": "v1.0",
+        "repo": "xo-cmake",
+        "type": "github"
       }
     }
   },
