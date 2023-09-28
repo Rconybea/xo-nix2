@@ -72,6 +72,7 @@
       system = "x86_64-linux";
       #xo_cmake_dir = self.packages.${system}.xo_cmake;
       pkgs = import nixpkgs { inherit system; };
+      xo_pkgs = self.packages.${system};
       xo_cmake_deriv = pkgs.stdenv.mkDerivation
         {
             name = "xo-cmake";
@@ -79,12 +80,14 @@
             src = xo_cmake_path;
             nativeBuildInputs = [ pkgs.cmake ];
         };
+      # XO shared .cmake files, e.g. xo_cxx.cmake
+      xo_cmake_dir = "${self.packages.${system}.xo_cmake}/share/cmake";
       indentlog_deriv = pkgs.stdenv.mkDerivation
         {
           name = "indentlog";
           version = "0.1";
           src = indentlog_path;
-          cmakeFlags = ["-DCMAKE_MODULE_PATH=${self.packages.${system}.xo_cmake}/share/cmake"];
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
           nativeBuildInputs = [ pkgs.cmake pkgs.catch2 self.packages.${system}.xo_cmake ];
         };
       refcnt_deriv = pkgs.stdenv.mkDerivation
@@ -92,24 +95,24 @@
           name = "refcnt";
           version = "0.1";
           src = refcnt_path;
-          cmakeFlags = ["-DCMAKE_MODULE_PATH=${self.packages.${system}.xo_cmake}/share/cmake"];
-          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 self.packages.${system}.xo_cmake self.packages.${system}.indentlog ];
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.xo_cmake xo_pkgs.indentlog ];
         };
       subsys_deriv = pkgs.stdenv.mkDerivation
         {
           name = "subsys";
           version = "0.1";
           src = subsys_path;
-          cmakeFlags = ["-DCMAKE_MODULE_PATH=${self.packages.${system}.xo_cmake}/share/cmake"];
-          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 self.packages.${system}.xo_cmake ];
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.xo_cmake ];
         };
       reflect_deriv = pkgs.stdenv.mkDerivation
         {
           name = "reflect";
           version = "0.1";
           src = reflect_path;
-          cmakeFlags = ["-DCMAKE_MODULE_PATH=${self.packages.${system}.xo_cmake}/share/cmake"];
-          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 self.packages.${system}.xo_cmake self.packages.${system}.indentlog self.packages.${system}.subsys self.packages.${system}.refcnt ];
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.xo_cmake xo_pkgs.indentlog xo_pkgs.subsys xo_pkgs.refcnt ];
         };
 
     in rec {
