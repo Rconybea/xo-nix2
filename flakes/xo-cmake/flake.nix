@@ -20,8 +20,10 @@
 
             src = pkgs.fetchgit {
               url = "https://github.com/rconybea/xo-cmake";
-              rev = "d349796363163419026d7ced0f46f3702ba4a2df";
-              sha256 = "vak8TfHbHr/lHcZEsB6qjvoVM6xTdlu9EVbQbhJwPrE=";
+              rev = "v1.0";
+              #rev = "v1.0";
+              #rev = "d349796363163419026d7ced0f46f3702ba4a2df";
+              #sha256 = "vak8TfHbHr/lHcZEsB6qjvoVM6xTdlu9EVbQbhJwPrE=";
             };
 
             nativeBuildInputs = with pkgs;
@@ -30,8 +32,6 @@
               ];
           };
 
-      defaultPackage.${system} = self.packages.${system}.xo_cmake;
-
-      # packages.x86_64-linux.default = packages.x86_64-linux.xo_cmake;
+      #defaultPackage.${system} = self.packages.${system}.xo_cmake;
     };
 }
