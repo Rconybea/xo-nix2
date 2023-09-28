@@ -1,0 +1,47 @@
+{
+  "nodes": {
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1685566663,
+        "narHash": "sha256-btHN1czJ6rzteeCuE/PNrdssqYD2nIA4w48miQAFloM=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "4ecab3273592f27479a583fb6d975d4aba3486fe",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "23.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "nixpkgs": "nixpkgs",
+        "xo_cmake": "xo_cmake"
+      }
+    },
+    "xo_cmake": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "dir": "flakes/xo-cmake",
+        "lastModified": 1695877755,
+        "narHash": "sha256-5n0wsuzUurHA1QHDUHlbLbskvCEovBNOdNklJLsNxyA=",
+        "type": "git",
+        "url": "file:///home/roland/proj/xo-nix2?dir=flakes/xo-cmake"
+      },
+      "original": {
+        "dir": "flakes/xo-cmake",
+        "type": "git",
+        "url": "file:///home/roland/proj/xo-nix2?dir=flakes/xo-cmake"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
