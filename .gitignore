@@ -1,5 +1,2 @@
-flake.lock
 result
 flakes/xo-cmake/result
-flakes/xo-cmake/flake.lock
-flakes/indentlog/flake.lock
