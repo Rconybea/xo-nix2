@@ -22,6 +22,13 @@
       flake = false;
     };
 
+    indentlog_path = {
+      type = "github";
+      owner = "Rconybea";
+      repo = "indentlog";
+      flake = false;
+    };
+
 #    # use [flakes/xo-cmake],  but:
 #    # - use nixpkgs established here
 #    # - use xo_cmake source established here
@@ -39,25 +46,36 @@
 
 #  outputs = { self, nixpkgs, xo_cmake_path, xo_cmake } :
 #  outputs = { self, nixpkgs, xo_cmake } :
-  outputs = { self, nixpkgs, xo_cmake_path } :
+  outputs = { self, nixpkgs, xo_cmake_path, indentlog_path } :
     # self: directory of *this* flake in nix store
     # nixpkgs:  result of invoking nixpkgs flake on inputs.nixpkgs
     # xo_cmake: result of invoking xo_cmake flake on inputs.xo_cmake
 
     let
       system = "x86_64-linux";
+      #xo_cmake_dir = self.packages.${system}.xo_cmake;
       pkgs = import nixpkgs { inherit system; };
-    in {
-      packages.${system} = {
-        cowsay = pkgs.cowsay;
-
-        xo_cmake = pkgs.stdenv.mkDerivation
-          {
+      xo_cmake_deriv = pkgs.stdenv.mkDerivation
+        {
             name = "xo-cmake";
             version = "1.0";
             src = xo_cmake_path;
             nativeBuildInputs = [ pkgs.cmake ];
-          };
+        };
+      indentlog_deriv = pkgs.stdenv.mkDerivation
+        {
+          name = "indentlog";
+          version = "0.1";
+          src = indentlog_path;
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${self.packages.${system}.xo_cmake}/share/cmake"];
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 self.packages.${system}.xo_cmake ];
+        };
+    in rec {
+      packages.${system} = {
+        cowsay = pkgs.cowsay;
+
+        xo_cmake = xo_cmake_deriv;
+        indentlog = indentlog_deriv;
 
 #        xo_cmake = xo_cmake.packages.${system}.xo_cmake;
 #        indentlog = indentlog_flake.packages.${system}.indentlog;
