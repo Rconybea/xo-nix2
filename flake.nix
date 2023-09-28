@@ -21,6 +21,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.xo_cmake_path.follows = "xo_cmake_path";
     };
+
+#    indentlog_flake = {
+#      url = "./flakes/indentlog";
+#      inputs.nixpkgs.follows = "nixpkgs";
+#    };
   };
 
   outputs = { self, nixpkgs, xo_cmake_path, xo_cmake } :
@@ -35,32 +40,10 @@
       packages.${system} = {
         cowsay = pkgs.cowsay;
         xo_cmake = xo_cmake.packages.${system}.xo_cmake;
+#        indentlog = indentlog_flake.packages.${system}.indentlog;
 
         ## importing non-flake nix package:
         # mything = pkgs.callPackages ./pkgs/mything {};
       };
     };
-
-#  # function inputs -> set
-#  # structure of set should be like:
-#  #   packages|devShells|checks ..
-#  #     targetarchitecture
-#  #       outputname
-#  # note however that templates,overlays omit the targetarchitecture layer
-#  #
-#  outputs = { self, nixpkgs }:
-#    let
-#      system = "x86_64-linux";
-#      pkgs = import nixpkgs { inherit system; };
-#    in {
-#      packages.${system} = rec {
-#        # NOTE: ./pkgs tree has to be committed to git for any of the below to work!
-#
-#        # pulling in a separate flake,  but replacing one of its inputs
-#
-#        xo_cmake = pkgs.callPackage ./pkgs/xo-cmake {};
-#        #hello = nixpkgs.legacyPackages.x86_64-linux.hello;
-#        #default = self.packages.x86_64-linux.hello;
-#      };
-#    };
 }
