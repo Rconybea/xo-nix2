@@ -29,6 +29,27 @@
       flake = false;
     };
 
+    refcnt_path = {
+      type = "github";
+      owner = "Rconybea";
+      repo = "refcnt";
+      flake = false;
+    };
+
+    subsys_path = {
+      type = "github";
+      owner = "Rconybea";
+      repo = "subsys";
+      flake = false;
+    };
+
+    reflect_path = {
+      type = "github";
+      owner = "Rconybea";
+      repo = "reflect";
+      flake = false;
+    };
+
 #    # use [flakes/xo-cmake],  but:
 #    # - use nixpkgs established here
 #    # - use xo_cmake source established here
@@ -46,11 +67,7 @@
 
 #  outputs = { self, nixpkgs, xo_cmake_path, xo_cmake } :
 #  outputs = { self, nixpkgs, xo_cmake } :
-  outputs = { self, nixpkgs, xo_cmake_path, indentlog_path } :
-    # self: directory of *this* flake in nix store
-    # nixpkgs:  result of invoking nixpkgs flake on inputs.nixpkgs
-    # xo_cmake: result of invoking xo_cmake flake on inputs.xo_cmake
-
+  outputs = { self, nixpkgs, xo_cmake_path, indentlog_path, refcnt_path, subsys_path, reflect_path } :
     let
       system = "x86_64-linux";
       #xo_cmake_dir = self.packages.${system}.xo_cmake;
@@ -70,12 +87,40 @@
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${self.packages.${system}.xo_cmake}/share/cmake"];
           nativeBuildInputs = [ pkgs.cmake pkgs.catch2 self.packages.${system}.xo_cmake ];
         };
+      refcnt_deriv = pkgs.stdenv.mkDerivation
+        {
+          name = "refcnt";
+          version = "0.1";
+          src = refcnt_path;
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${self.packages.${system}.xo_cmake}/share/cmake"];
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 self.packages.${system}.xo_cmake self.packages.${system}.indentlog ];
+        };
+      subsys_deriv = pkgs.stdenv.mkDerivation
+        {
+          name = "subsys";
+          version = "0.1";
+          src = subsys_path;
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${self.packages.${system}.xo_cmake}/share/cmake"];
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 self.packages.${system}.xo_cmake ];
+        };
+      reflect_deriv = pkgs.stdenv.mkDerivation
+        {
+          name = "reflect";
+          version = "0.1";
+          src = reflect_path;
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${self.packages.${system}.xo_cmake}/share/cmake"];
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 self.packages.${system}.xo_cmake self.packages.${system}.indentlog self.packages.${system}.subsys self.packages.${system}.refcnt ];
+        };
+
     in rec {
       packages.${system} = {
         cowsay = pkgs.cowsay;
 
         xo_cmake = xo_cmake_deriv;
         indentlog = indentlog_deriv;
+        refcnt = refcnt_deriv;
+        subsys = subsys_deriv;
+        reflect = reflect_deriv;
 
 #        xo_cmake = xo_cmake.packages.${system}.xo_cmake;
 #        indentlog = indentlog_flake.packages.${system}.indentlog;

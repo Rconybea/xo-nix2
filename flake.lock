@@ -32,11 +32,62 @@
         "type": "github"
       }
     },
+    "refcnt_path": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1695858086,
+        "narHash": "sha256-M5pbAYW5Zbnfy7vLnmKvJYRT8GnHJGdWwyOgAeA3HOo=",
+        "owner": "Rconybea",
+        "repo": "refcnt",
+        "rev": "4e0c8e92f236ebfce2b345b686f8b45fc26ba8b7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rconybea",
+        "repo": "refcnt",
+        "type": "github"
+      }
+    },
+    "reflect_path": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1695858172,
+        "narHash": "sha256-VAQauC0fts6o+QBdb1eHTi0j48K4iP4fwjvLKMiUOlE=",
+        "owner": "Rconybea",
+        "repo": "reflect",
+        "rev": "94d77bf809900b2458f87dfe43d8698b1910230c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rconybea",
+        "repo": "reflect",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "indentlog_path": "indentlog_path",
         "nixpkgs": "nixpkgs",
+        "refcnt_path": "refcnt_path",
+        "reflect_path": "reflect_path",
+        "subsys_path": "subsys_path",
         "xo_cmake_path": "xo_cmake_path"
+      }
+    },
+    "subsys_path": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1695853374,
+        "narHash": "sha256-gQju6iPssKI0Sqkw0sh4yfmYJjbSOM3by3UbahT6gIc=",
+        "owner": "Rconybea",
+        "repo": "subsys",
+        "rev": "4600ebcb213914af4637b20eaad5cae5bd667dff",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rconybea",
+        "repo": "subsys",
+        "type": "github"
       }
     },
     "xo_cmake_path": {
