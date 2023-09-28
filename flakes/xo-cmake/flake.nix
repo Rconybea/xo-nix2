@@ -13,8 +13,7 @@
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
     in {
-      packages.${system} = rec {
-        xo_cmake = pkgs.stdenv.mkDerivation
+      packages.${system}.xo_cmake = pkgs.stdenv.mkDerivation
           {
             name = "xo-cmake";
             # version = ...;
@@ -30,9 +29,9 @@
                 cmake
               ];
           };
-        };
 
-      default = self.packages.${system}.xo_cmake;
+      defaultPackage.${system} = self.packages.${system}.xo_cmake;
+
       # packages.x86_64-linux.default = packages.x86_64-linux.xo_cmake;
     };
 }
