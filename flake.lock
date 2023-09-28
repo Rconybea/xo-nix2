@@ -35,11 +35,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-DLMAlrvAv46Q5LYHo4Nkdf76ktuN5rt1nce7sNvdDhY=",
-        "path": "/nix/store/xj9nm52w1vfy811zw83ba8vrbw5nr6pn-source/flakes/xo-cmake",
+        "path": "/nix/store/8x16h6pk3qns1100qfy5fbphl5hv2ki5-source/flakes/xo-cmake",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/xj9nm52w1vfy811zw83ba8vrbw5nr6pn-source/flakes/xo-cmake",
+        "path": "/nix/store/8x16h6pk3qns1100qfy5fbphl5hv2ki5-source/flakes/xo-cmake",
         "type": "path"
       }
     },
