@@ -5,6 +5,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/23.05";
 
+    # this is bad!   will cause indentlog and toplevel xo to fight over follows
     xo_cmake_flake.url = "../xo-cmake";
 
     xo_indentlog_path = {
