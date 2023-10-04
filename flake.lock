@@ -3,11 +3,11 @@
     "indentlog_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1695853401,
-        "narHash": "sha256-CBuUuFAPvFvAEQAW5UlLX7bn6IUJogDwFgOAQmrzJQ4=",
+        "lastModified": 1696392115,
+        "narHash": "sha256-9Hfu005rpUV8KQPaoEUg8OJrFcXtt7wizwYJ8X1U2R8=",
         "owner": "Rconybea",
         "repo": "indentlog",
-        "rev": "afd595185b5d4b879a19eb03af3d8e971feffdcc",
+        "rev": "e27c64ce15b3ea96bec488d035d6207989f98c17",
         "type": "github"
       },
       "original": {
@@ -32,14 +32,30 @@
         "type": "github"
       }
     },
+    "randomgen_path": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1696392158,
+        "narHash": "sha256-rVgeKSLd4CsDbdJsfR6q9SQ2dDNXdLsRM8pw4HhxVhs=",
+        "owner": "Rconybea",
+        "repo": "randomgen",
+        "rev": "90dcd600c07068fc4162e1068941fae983f38d87",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rconybea",
+        "repo": "randomgen",
+        "type": "github"
+      }
+    },
     "refcnt_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1695858086,
-        "narHash": "sha256-M5pbAYW5Zbnfy7vLnmKvJYRT8GnHJGdWwyOgAeA3HOo=",
+        "lastModified": 1696384877,
+        "narHash": "sha256-ry0broD2mqfbWYW01Ix6B8gam0kYq1ejrHp/wLVv09A=",
         "owner": "Rconybea",
         "repo": "refcnt",
-        "rev": "4e0c8e92f236ebfce2b345b686f8b45fc26ba8b7",
+        "rev": "3c361213c729621f6ae5264c3ffa05b6463257b3",
         "type": "github"
       },
       "original": {
@@ -51,11 +67,11 @@
     "reflect_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1695858172,
-        "narHash": "sha256-VAQauC0fts6o+QBdb1eHTi0j48K4iP4fwjvLKMiUOlE=",
+        "lastModified": 1696386130,
+        "narHash": "sha256-ybI7O4Nxa3JjzKlY3BXgQCD44J+M9c3O+R6q3wyV76g=",
         "owner": "Rconybea",
         "repo": "reflect",
-        "rev": "94d77bf809900b2458f87dfe43d8698b1910230c",
+        "rev": "ee436ca9e96ec2c0f96edbb73e79debf11979867",
         "type": "github"
       },
       "original": {
@@ -68,10 +84,12 @@
       "inputs": {
         "indentlog_path": "indentlog_path",
         "nixpkgs": "nixpkgs",
+        "randomgen_path": "randomgen_path",
         "refcnt_path": "refcnt_path",
         "reflect_path": "reflect_path",
         "subsys_path": "subsys_path",
-        "xo_cmake_path": "xo_cmake_path"
+        "xo_cmake_path": "xo_cmake_path",
+        "xo_ordinaltree_path": "xo_ordinaltree_path"
       }
     },
     "subsys_path": {
@@ -93,16 +111,32 @@
     "xo_cmake_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1695858039,
-        "narHash": "sha256-zMe17OTJ8dnSfG2OKGEUdTZaYchnJSdZ3amJzrW7Ewg=",
+        "lastModified": 1696440915,
+        "narHash": "sha256-pI+2kfWi8HHZxELEacNzGlpD7mw9QIa03terkthKv+M=",
         "owner": "Rconybea",
         "repo": "xo-cmake",
-        "rev": "f38f48943762a2bc72efd27ef1ee7dbab7ce6ee2",
+        "rev": "ad7ea74f482b26ff4d272761ae4acfcfb0898c01",
         "type": "github"
       },
       "original": {
         "owner": "Rconybea",
         "repo": "xo-cmake",
+        "type": "github"
+      }
+    },
+    "xo_ordinaltree_path": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1696440527,
+        "narHash": "sha256-UkmSVoTKVJwaFweeJKfNybErZRl5bqGT4Z93xKyd/fk=",
+        "owner": "Rconybea",
+        "repo": "xo-ordinaltree",
+        "rev": "5e16be0b5adeecef371bbc149539e71678576c1d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rconybea",
+        "repo": "xo-ordinaltree",
         "type": "github"
       }
     }

@@ -111,3 +111,7 @@ $ cat flake.lock
 ```
 $ nix build .#reflect
 ```
+
+```
+$ nix flake update
+```

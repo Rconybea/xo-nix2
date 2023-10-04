@@ -50,6 +50,20 @@
       flake = false;
     };
 
+    randomgen_path = {
+      type = "github";
+      owner = "Rconybea";
+      repo = "randomgen";
+      flake = false;
+    };
+
+    xo_ordinaltree_path = {
+      type = "github";
+      owner = "Rconybea";
+      repo = "xo-ordinaltree";
+      flake = false;
+    };
+
 #    # use [flakes/xo-cmake],  but:
 #    # - use nixpkgs established here
 #    # - use xo_cmake source established here
@@ -67,7 +81,14 @@
 
 #  outputs = { self, nixpkgs, xo_cmake_path, xo_cmake } :
 #  outputs = { self, nixpkgs, xo_cmake } :
-  outputs = { self, nixpkgs, xo_cmake_path, indentlog_path, refcnt_path, subsys_path, reflect_path } :
+  outputs = { self, nixpkgs,
+              xo_cmake_path,
+              indentlog_path,
+              refcnt_path,
+              subsys_path,
+              reflect_path,
+              randomgen_path,
+              xo_ordinaltree_path } :
     let
       system = "x86_64-linux";
       #xo_cmake_dir = self.packages.${system}.xo_cmake;
@@ -114,6 +135,22 @@
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
           nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.xo_cmake xo_pkgs.indentlog xo_pkgs.subsys xo_pkgs.refcnt ];
         };
+      randomgen_deriv = pkgs.stdenv.mkDerivation
+        {
+          name = "randomgen";
+          version = "0.1";
+          src = randomgen_path;
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
+          nativeBuildInputs = [ pkgs.cmake xo_pkgs.indentlog ];
+        };
+      xo_ordinaltree_deriv = pkgs.stdenv.mkDerivation
+        {
+          name = "xo_tree";
+          version = "0.1";
+          src = xo_ordinaltree_path;
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.refcnt xo_pkgs.indentlog xo_pkgs.randomgen ];
+        };
 
     in rec {
       packages.${system} = {
@@ -124,6 +161,8 @@
         refcnt = refcnt_deriv;
         subsys = subsys_deriv;
         reflect = reflect_deriv;
+        randomgen = randomgen_deriv;
+        xo_ordinaltree = xo_ordinaltree_deriv;
 
 #        xo_cmake = xo_cmake.packages.${system}.xo_cmake;
 #        indentlog = indentlog_flake.packages.${system}.indentlog;
