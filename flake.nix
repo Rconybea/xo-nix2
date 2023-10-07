@@ -64,6 +64,20 @@
       flake = false;
     };
 
+    xo_pyutil_path = {
+      type = "github";
+      owner = "Rconybea";
+      repo = "xo-pyutil";
+      flake = false;
+    };
+
+    xo_pyreflect_path = {
+      type = "github";
+      owner = "Rconybea";
+      repo = "xo-pyreflect";
+      flake = false;
+    };
+
 #    # use [flakes/xo-cmake],  but:
 #    # - use nixpkgs established here
 #    # - use xo_cmake source established here
@@ -81,14 +95,17 @@
 
 #  outputs = { self, nixpkgs, xo_cmake_path, xo_cmake } :
 #  outputs = { self, nixpkgs, xo_cmake } :
-  outputs = { self, nixpkgs,
+  outputs = { self,
+              nixpkgs,
               xo_cmake_path,
               indentlog_path,
               refcnt_path,
               subsys_path,
               reflect_path,
               randomgen_path,
-              xo_ordinaltree_path } :
+              xo_ordinaltree_path,
+              xo_pyutil_path,
+              xo_pyreflect_path} :
     let
       system = "x86_64-linux";
       #xo_cmake_dir = self.packages.${system}.xo_cmake;
@@ -151,6 +168,23 @@
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
           nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.refcnt xo_pkgs.indentlog xo_pkgs.randomgen ];
         };
+      xo_pyutil_deriv = pkgs.stdenv.mkDerivation
+        {
+          name = "xo_pyutil";
+          version = "0.1";
+          src = xo_pyutil_path;
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
+          nativeBuildInputs = [ pkgs.cmake pkgs.python311Full pkgs.python311Packages.pybind11 pkgs.catch2  ];
+        };
+      xo_pyreflect_deriv = pkgs.stdenv.mkDerivation
+        {
+          name = "xo_pyreflect";
+          version = "0.1";
+          src = xo_pyreflect_path;
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
+          buildFlags = ["VERBOSE=1"];
+          nativeBuildInputs = [ pkgs.cmake pkgs.python311Full pkgs.python311Packages.pybind11 pkgs.catch2 xo_pkgs.refcnt xo_pkgs.indentlog xo_pkgs.randomgen xo_pkgs.reflect xo_pkgs.xo_pyutil ];
+        };
 
     in rec {
       packages.${system} = {
@@ -163,6 +197,8 @@
         reflect = reflect_deriv;
         randomgen = randomgen_deriv;
         xo_ordinaltree = xo_ordinaltree_deriv;
+        xo_pyutil = xo_pyutil_deriv;
+        xo_pyreflect = xo_pyreflect_deriv;
 
 #        xo_cmake = xo_cmake.packages.${system}.xo_cmake;
 #        indentlog = indentlog_flake.packages.${system}.indentlog;

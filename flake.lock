@@ -3,11 +3,11 @@
     "indentlog_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1696392115,
-        "narHash": "sha256-9Hfu005rpUV8KQPaoEUg8OJrFcXtt7wizwYJ8X1U2R8=",
+        "lastModified": 1696631410,
+        "narHash": "sha256-Au9NAwwdOHxP6AhsCGSfXzIdAECDfjgZzO/15zOap/g=",
         "owner": "Rconybea",
         "repo": "indentlog",
-        "rev": "e27c64ce15b3ea96bec488d035d6207989f98c17",
+        "rev": "c6a258eb3cffe52d61bd9ab08b713050b0c9ab5b",
         "type": "github"
       },
       "original": {
@@ -35,11 +35,11 @@
     "randomgen_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1696392158,
-        "narHash": "sha256-rVgeKSLd4CsDbdJsfR6q9SQ2dDNXdLsRM8pw4HhxVhs=",
+        "lastModified": 1696634844,
+        "narHash": "sha256-uAYA3w1rwGFWLyG4yzgz/H3czLxxdM9lTMgZR6/QZkQ=",
         "owner": "Rconybea",
         "repo": "randomgen",
-        "rev": "90dcd600c07068fc4162e1068941fae983f38d87",
+        "rev": "b3d4a1276efcfa9b555161b38dc7db44747e05f6",
         "type": "github"
       },
       "original": {
@@ -51,11 +51,11 @@
     "refcnt_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1696384877,
-        "narHash": "sha256-ry0broD2mqfbWYW01Ix6B8gam0kYq1ejrHp/wLVv09A=",
+        "lastModified": 1696650976,
+        "narHash": "sha256-k7/BHoSlvZ+OGNm6Msd7oX2XqYEdnLrL6n51hdX1uCc=",
         "owner": "Rconybea",
         "repo": "refcnt",
-        "rev": "3c361213c729621f6ae5264c3ffa05b6463257b3",
+        "rev": "5f22bca0dc92a1abe3754eadaaa47f50afe2e9e4",
         "type": "github"
       },
       "original": {
@@ -67,11 +67,11 @@
     "reflect_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1696386130,
-        "narHash": "sha256-ybI7O4Nxa3JjzKlY3BXgQCD44J+M9c3O+R6q3wyV76g=",
+        "lastModified": 1696650913,
+        "narHash": "sha256-Max+aJHAjXhIrzd3qohqWaU9twkdhbZ4UAvkyJ+CR+k=",
         "owner": "Rconybea",
         "repo": "reflect",
-        "rev": "ee436ca9e96ec2c0f96edbb73e79debf11979867",
+        "rev": "0c73b5417b908697629be986ba45513c1e832646",
         "type": "github"
       },
       "original": {
@@ -89,17 +89,19 @@
         "reflect_path": "reflect_path",
         "subsys_path": "subsys_path",
         "xo_cmake_path": "xo_cmake_path",
-        "xo_ordinaltree_path": "xo_ordinaltree_path"
+        "xo_ordinaltree_path": "xo_ordinaltree_path",
+        "xo_pyreflect_path": "xo_pyreflect_path",
+        "xo_pyutil_path": "xo_pyutil_path"
       }
     },
     "subsys_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1695853374,
-        "narHash": "sha256-gQju6iPssKI0Sqkw0sh4yfmYJjbSOM3by3UbahT6gIc=",
+        "lastModified": 1696633944,
+        "narHash": "sha256-WpFiRO0cCHI623XidMpH4ryMaxn1sQ+byp5W0KRFYiM=",
         "owner": "Rconybea",
         "repo": "subsys",
-        "rev": "4600ebcb213914af4637b20eaad5cae5bd667dff",
+        "rev": "ebfbd40afc752d160ae23c1b424094f14ec66d77",
         "type": "github"
       },
       "original": {
@@ -111,11 +113,11 @@
     "xo_cmake_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1696440915,
-        "narHash": "sha256-pI+2kfWi8HHZxELEacNzGlpD7mw9QIa03terkthKv+M=",
+        "lastModified": 1696709226,
+        "narHash": "sha256-O3FteV0Ho+XkCF2jR06XeCNOb4OpdkeuhLIolan+wK4=",
         "owner": "Rconybea",
         "repo": "xo-cmake",
-        "rev": "ad7ea74f482b26ff4d272761ae4acfcfb0898c01",
+        "rev": "2ccb974fbfec85b28e4efe423db77b9bd935170f",
         "type": "github"
       },
       "original": {
@@ -127,16 +129,48 @@
     "xo_ordinaltree_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1696440527,
-        "narHash": "sha256-UkmSVoTKVJwaFweeJKfNybErZRl5bqGT4Z93xKyd/fk=",
+        "lastModified": 1696634524,
+        "narHash": "sha256-7aV4+RAuZEyrWuDl5oRuoSzDzRy9La8qq/cVDu4vZw0=",
         "owner": "Rconybea",
         "repo": "xo-ordinaltree",
-        "rev": "5e16be0b5adeecef371bbc149539e71678576c1d",
+        "rev": "14ee09a76b45a9baf64a1de9941ae5028e612e8f",
         "type": "github"
       },
       "original": {
         "owner": "Rconybea",
         "repo": "xo-ordinaltree",
+        "type": "github"
+      }
+    },
+    "xo_pyreflect_path": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1696709019,
+        "narHash": "sha256-LbH0BiU7nFnCgfZQU97yG8c8xbKe4SEdfq2vDDiBcr0=",
+        "owner": "Rconybea",
+        "repo": "xo-pyreflect",
+        "rev": "ac5534d8e2717e4241b9e66ba4ef42dcf373ce15",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rconybea",
+        "repo": "xo-pyreflect",
+        "type": "github"
+      }
+    },
+    "xo_pyutil_path": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1696651325,
+        "narHash": "sha256-al2IBXwRb7prNWC6FRlm2Z7zF/k/f8DZjJ50WAycunk=",
+        "owner": "Rconybea",
+        "repo": "xo-pyutil",
+        "rev": "f25389cda2da75ba225d1a663d30dea9660af31b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rconybea",
+        "repo": "xo-pyutil",
         "type": "github"
       }
     }
