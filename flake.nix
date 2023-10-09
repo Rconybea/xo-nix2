@@ -206,5 +206,16 @@
         ## importing non-flake nix package:
         # mything = pkgs.callPackages ./pkgs/mything {};
       };
+
+      devShells.${system} = { 
+        default = pkgs.mkShell { packages = [ pkgs.emacs
+                                              pkgs.cmake
+                                              pkgs.catch2
+                                              pkgs.which
+                                              pkgs.python311Full
+                                              pkgs.python311Packages.pybind11
+                                              pkgs.lcov
+        ]; };
+      };
     };
 }
