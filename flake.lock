@@ -3,11 +3,11 @@
     "indentlog_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1696631410,
-        "narHash": "sha256-Au9NAwwdOHxP6AhsCGSfXzIdAECDfjgZzO/15zOap/g=",
+        "lastModified": 1697063829,
+        "narHash": "sha256-haD1+9PQdX46rrEqbgEQtXnYXYaWgokdD1ojkt2eLME=",
         "owner": "Rconybea",
         "repo": "indentlog",
-        "rev": "c6a258eb3cffe52d61bd9ab08b713050b0c9ab5b",
+        "rev": "0f898ff01136b16ec0e8e2aec352d3194fbebe33",
         "type": "github"
       },
       "original": {
@@ -51,11 +51,11 @@
     "refcnt_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1696787745,
-        "narHash": "sha256-Fyd6T9CBuX4Zy0jaF9x69d5oDEkOOQv1OU4r99ZbE4w=",
+        "lastModified": 1696957425,
+        "narHash": "sha256-hmIonobP2OTcJ2Y8/ZByQf3t0+o7k7ARfPAZN3QXQqQ=",
         "owner": "Rconybea",
         "repo": "refcnt",
-        "rev": "c494a44f990310bfe6034791c12cc9c5edef8cfe",
+        "rev": "4d2cc526585116aed8a9a90cf948cad0085d6490",
         "type": "github"
       },
       "original": {
@@ -67,11 +67,11 @@
     "reflect_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1696874590,
-        "narHash": "sha256-poGRWKgFwEKjSIyLeEvU4IZXe4fpRICdQX+HnBQco+s=",
+        "lastModified": 1696884817,
+        "narHash": "sha256-VEZhA+evXJDgCE1k9F/q/8nbOi4ltqpYWQyHcU8HnHQ=",
         "owner": "Rconybea",
         "repo": "reflect",
-        "rev": "d0ccff195f49712ded3bc015b6619ba8ef685f2d",
+        "rev": "ccb934e2b5fffd2d02d22ed7ce992310b3da3bd5",
         "type": "github"
       },
       "original": {
@@ -88,20 +88,22 @@
         "refcnt_path": "refcnt_path",
         "reflect_path": "reflect_path",
         "subsys_path": "subsys_path",
+        "xo_callback_path": "xo_callback_path",
         "xo_cmake_path": "xo_cmake_path",
         "xo_ordinaltree_path": "xo_ordinaltree_path",
         "xo_pyreflect_path": "xo_pyreflect_path",
-        "xo_pyutil_path": "xo_pyutil_path"
+        "xo_pyutil_path": "xo_pyutil_path",
+        "xo_webutil_path": "xo_webutil_path"
       }
     },
     "subsys_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1696633944,
-        "narHash": "sha256-WpFiRO0cCHI623XidMpH4ryMaxn1sQ+byp5W0KRFYiM=",
+        "lastModified": 1696885154,
+        "narHash": "sha256-3wtIFTPZqWozsMHzw8F283tHBI/XjiLZK+611lhS0lA=",
         "owner": "Rconybea",
         "repo": "subsys",
-        "rev": "ebfbd40afc752d160ae23c1b424094f14ec66d77",
+        "rev": "7a800d7cf07cd55022a1819d80f0b737a8ee1dcb",
         "type": "github"
       },
       "original": {
@@ -110,14 +112,30 @@
         "type": "github"
       }
     },
+    "xo_callback_path": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1697061091,
+        "narHash": "sha256-Wxm38ga1tBMqsgPaIpI/KJq5pJHrORXonrTONJL2af0=",
+        "owner": "Rconybea",
+        "repo": "xo-callback",
+        "rev": "30a524b22cf63dfd25381986fb45231ed70d0a04",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rconybea",
+        "repo": "xo-callback",
+        "type": "github"
+      }
+    },
     "xo_cmake_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1696787408,
-        "narHash": "sha256-DZi87eQbUmcTmkrUsS8OL1+TeliToBZ0LSlwjmk1KCg=",
+        "lastModified": 1697061820,
+        "narHash": "sha256-mBgus85ELrsk67rJDJcyRtTDT0lVubmn/qbu3FEFuuE=",
         "owner": "Rconybea",
         "repo": "xo-cmake",
-        "rev": "46ff8f0b41d45d92a49d3f69abb5dba8cc27c008",
+        "rev": "1c648d70c3c3a226f193abaa521149899a2a1c6f",
         "type": "github"
       },
       "original": {
@@ -171,6 +189,22 @@
       "original": {
         "owner": "Rconybea",
         "repo": "xo-pyutil",
+        "type": "github"
+      }
+    },
+    "xo_webutil_path": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1697066436,
+        "narHash": "sha256-uHcomllS3G3SrA1fG/LbL2t+J3Q1pO2hU7fhMbfeHtg=",
+        "owner": "Rconybea",
+        "repo": "xo-webutil",
+        "rev": "937109896c1fac15779ae94e27bd18d93493cc5e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rconybea",
+        "repo": "xo-webutil",
         "type": "github"
       }
     }

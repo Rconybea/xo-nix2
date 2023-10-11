@@ -7,6 +7,7 @@ $ cd xo-nix2
 $ nix flake check
 ```
 
+# Anatomy
 ```
 $ nix flake show
 git+file:///home/roland/proj/xo-nix2?ref=refs/heads/main&rev=c5f455b1508ed00ed291ff536e93c69a0fa77cc1
@@ -108,10 +109,21 @@ $ cat flake.lock
     ...
 ```
 
+# Build
 ```
 $ nix build .#reflect
 ```
 
+# Update versions
+
+(changes hashes in `flake.lock`)
 ```
 $ nix flake update
+```
+
+# Development
+```
+$ nix develop
+```
+This creates shell containing all the packages in `devShells.${system}`
 ```

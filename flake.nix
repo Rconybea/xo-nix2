@@ -3,14 +3,9 @@
   description = "XO flake repo";
 
   # dependencies of this flake
-  inputs = rec {
+  inputs = {
     #nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/5d017a8822e0907fb96f7700a319f9fe2434de02.tar.gz";
     nixpkgs.url = "github:nixos/nixpkgs/23.05";
-
-#    xo_cmake_path = {
-#      type = "github"; owner = "Rconybea"; repo = "xo-cmake"; ref = "v1.0";
-#      flake = false;
-#    };
 
     xo_cmake_path = {
       type = "github";
@@ -78,6 +73,11 @@
       flake = false;
     };
 
+    xo_callback_path = { type = "github"; owner = "Rconybea"; repo = "xo-callback"; flake = false; };
+    xo_webutil_path = { type = "github"; owner = "Rconybea"; repo = "xo-webutil"; flake = false; };
+
+    # REMEMBER to ADD to outputs BELOW
+
 #    # use [flakes/xo-cmake],  but:
 #    # - use nixpkgs established here
 #    # - use xo_cmake source established here
@@ -105,7 +105,9 @@
               randomgen_path,
               xo_ordinaltree_path,
               xo_pyutil_path,
-              xo_pyreflect_path} :
+              xo_pyreflect_path,
+              xo_callback_path,
+              xo_webutil_path} :
     let
       system = "x86_64-linux";
       #xo_cmake_dir = self.packages.${system}.xo_cmake;
@@ -185,6 +187,22 @@
           buildFlags = ["VERBOSE=1"];
           nativeBuildInputs = [ pkgs.cmake pkgs.python311Full pkgs.python311Packages.pybind11 pkgs.catch2 xo_pkgs.refcnt xo_pkgs.indentlog xo_pkgs.randomgen xo_pkgs.reflect xo_pkgs.xo_pyutil ];
         };
+      xo_callback_deriv = pkgs.stdenv.mkDerivation
+        {
+          name = "xo_callback";
+          version = "1.0";
+          src = xo_callback_path;
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
+          nativeBuildInputs = [ pkgs.cmake xo_pkgs.refcnt xo_pkgs.indentlog ];
+        };
+      xo_webutil_deriv = pkgs.stdenv.mkDerivation
+        {
+          name = "xo_webutil";
+          version = "1.0";
+          src = xo_webutil_path;
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
+          nativeBuildInputs = [ pkgs.cmake xo_pkgs.xo_callback xo_pkgs.refcnt xo_pkgs.indentlog ];
+        };
 
     in rec {
       packages.${system} = {
@@ -199,6 +217,8 @@
         xo_ordinaltree = xo_ordinaltree_deriv;
         xo_pyutil = xo_pyutil_deriv;
         xo_pyreflect = xo_pyreflect_deriv;
+        xo_callback = xo_callback_deriv;
+        xo_webutil = xo_webutil_deriv;
 
 #        xo_cmake = xo_cmake.packages.${system}.xo_cmake;
 #        indentlog = indentlog_flake.packages.${system}.indentlog;
@@ -207,7 +227,7 @@
         # mything = pkgs.callPackages ./pkgs/mything {};
       };
 
-      devShells.${system} = { 
+      devShells.${system} = {
         default = pkgs.mkShell { packages = [ pkgs.emacs
                                               pkgs.cmake
                                               pkgs.catch2
