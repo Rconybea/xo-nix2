@@ -66,13 +66,7 @@
       flake = false;
     };
 
-    xo_pyreflect_path = {
-      type = "github";
-      owner = "Rconybea";
-      repo = "xo-pyreflect";
-      flake = false;
-    };
-
+    xo_pyreflect_path = { type = "github"; owner = "Rconybea"; repo = "xo-pyreflect"; flake = false; };
     xo_callback_path = { type = "github"; owner = "Rconybea"; repo = "xo-callback"; flake = false; };
     xo_webutil_path = { type = "github"; owner = "Rconybea"; repo = "xo-webutil"; flake = false; };
 
