@@ -93,6 +93,7 @@
         "xo_ordinaltree_path": "xo_ordinaltree_path",
         "xo_pyreflect_path": "xo_pyreflect_path",
         "xo_pyutil_path": "xo_pyutil_path",
+        "xo_reactor_path": "xo_reactor_path",
         "xo_webutil_path": "xo_webutil_path"
       }
     },
@@ -189,6 +190,22 @@
       "original": {
         "owner": "Rconybea",
         "repo": "xo-pyutil",
+        "type": "github"
+      }
+    },
+    "xo_reactor_path": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1697060839,
+        "narHash": "sha256-VXkDs8W+yXZhRpLYE/W0opjjgvH1AdPVD6ZSvSM8XXg=",
+        "owner": "Rconybea",
+        "repo": "xo-reactor",
+        "rev": "6fd18236eb3733385d22497cac50acbb32bd3c13",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rconybea",
+        "repo": "xo-reactor",
         "type": "github"
       }
     },

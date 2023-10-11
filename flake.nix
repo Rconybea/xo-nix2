@@ -69,6 +69,7 @@
     xo_pyreflect_path = { type = "github"; owner = "Rconybea"; repo = "xo-pyreflect"; flake = false; };
     xo_callback_path = { type = "github"; owner = "Rconybea"; repo = "xo-callback"; flake = false; };
     xo_webutil_path = { type = "github"; owner = "Rconybea"; repo = "xo-webutil"; flake = false; };
+    xo_reactor_path = { type = "github"; owner = "Rconybea"; repo = "xo-reactor"; flake = false; };
 
     # REMEMBER to ADD to outputs BELOW
 
@@ -101,7 +102,8 @@
               xo_pyutil_path,
               xo_pyreflect_path,
               xo_callback_path,
-              xo_webutil_path} :
+              xo_webutil_path,
+              xo_reactor_path} :
     let
       system = "x86_64-linux";
       #xo_cmake_dir = self.packages.${system}.xo_cmake;
@@ -197,6 +199,14 @@
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
           nativeBuildInputs = [ pkgs.cmake xo_pkgs.xo_callback xo_pkgs.refcnt xo_pkgs.indentlog ];
         };
+      xo_reactor_deriv = pkgs.stdenv.mkDerivation
+        {
+          name = "xo_reactor";
+          version = "1.0";
+          src = xo_reactor_path;
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.xo_webutil xo_pkgs.xo_callback xo_pkgs.reflect xo_pkgs.subsys xo_pkgs.refcnt xo_pkgs.indentlog xo_pkgs.randomgen ];
+        };
 
     in rec {
       packages.${system} = {
@@ -213,6 +223,7 @@
         xo_pyreflect = xo_pyreflect_deriv;
         xo_callback = xo_callback_deriv;
         xo_webutil = xo_webutil_deriv;
+        xo_reactor = xo_reactor_deriv;
 
 #        xo_cmake = xo_cmake.packages.${system}.xo_cmake;
 #        indentlog = indentlog_flake.packages.${system}.indentlog;
