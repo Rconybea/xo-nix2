@@ -59,14 +59,9 @@
       flake = false;
     };
 
-    xo_pyutil_path = {
-      type = "github";
-      owner = "Rconybea";
-      repo = "xo-pyutil";
-      flake = false;
-    };
-
+    xo_pyutil_path = { type = "github"; owner = "Rconybea"; repo = "xo-pyutil"; flake = false; };
     xo_pyreflect_path = { type = "github"; owner = "Rconybea"; repo = "xo-pyreflect"; flake = false; };
+    xo_printjson_path = { type = "github"; owner = "Rconybea"; repo = "xo-printjson"; flake = false; };
     xo_callback_path = { type = "github"; owner = "Rconybea"; repo = "xo-callback"; flake = false; };
     xo_webutil_path = { type = "github"; owner = "Rconybea"; repo = "xo-webutil"; flake = false; };
     xo_reactor_path = { type = "github"; owner = "Rconybea"; repo = "xo-reactor"; flake = false; };
@@ -101,6 +96,7 @@
               xo_ordinaltree_path,
               xo_pyutil_path,
               xo_pyreflect_path,
+              xo_printjson_path,
               xo_callback_path,
               xo_webutil_path,
               xo_reactor_path} :
@@ -183,6 +179,14 @@
           buildFlags = ["VERBOSE=1"];
           nativeBuildInputs = [ pkgs.cmake pkgs.python311Full pkgs.python311Packages.pybind11 pkgs.catch2 xo_pkgs.refcnt xo_pkgs.indentlog xo_pkgs.randomgen xo_pkgs.reflect xo_pkgs.xo_pyutil ];
         };
+      xo_printjson_deriv = pkgs.stdenv.mkDerivation
+        {
+          name = "xo_printjson";
+          version = "1.0";
+          src = xo_printjson_path;
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.reflect xo_pkgs.subsys xo_pkgs.refcnt xo_pkgs.indentlog ];
+        };
       xo_callback_deriv = pkgs.stdenv.mkDerivation
         {
           name = "xo_callback";
@@ -221,6 +225,7 @@
         xo_ordinaltree = xo_ordinaltree_deriv;
         xo_pyutil = xo_pyutil_deriv;
         xo_pyreflect = xo_pyreflect_deriv;
+        xo_printjson = xo_printjson_deriv;
         xo_callback = xo_callback_deriv;
         xo_webutil = xo_webutil_deriv;
         xo_reactor = xo_reactor_deriv;

@@ -91,6 +91,7 @@
         "xo_callback_path": "xo_callback_path",
         "xo_cmake_path": "xo_cmake_path",
         "xo_ordinaltree_path": "xo_ordinaltree_path",
+        "xo_printjson_path": "xo_printjson_path",
         "xo_pyreflect_path": "xo_pyreflect_path",
         "xo_pyutil_path": "xo_pyutil_path",
         "xo_reactor_path": "xo_reactor_path",
@@ -158,6 +159,22 @@
       "original": {
         "owner": "Rconybea",
         "repo": "xo-ordinaltree",
+        "type": "github"
+      }
+    },
+    "xo_printjson_path": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1697069536,
+        "narHash": "sha256-E8Vy0inzNohERLCOo4slPJFcXyuJhEqd1r2Z/L6w/ic=",
+        "owner": "Rconybea",
+        "repo": "xo-printjson",
+        "rev": "12d38a7e4a87b08ddfbf0590e6b6c92929b211a1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rconybea",
+        "repo": "xo-printjson",
         "type": "github"
       }
     },
