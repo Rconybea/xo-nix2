@@ -105,6 +105,21 @@
       #xo_cmake_dir = self.packages.${system}.xo_cmake;
       pkgs = import nixpkgs { inherit system; };
       xo_pkgs = self.packages.${system};
+
+      # NOTE:
+      #   nativeBuildInputs:  inputs needed at build-time,  but not propagated to run time
+      #   buildInputs:        inputs needed at build-time,  but that should also be available
+      #                       at run-time
+      #
+      #   propagatedNativeBuildInputs: inputs needed at build-time for a package X,
+      #                                that should also be available (but only needed at build-time)
+      #                                in other packages Y that have X as an input
+      #                                (-> ./result/nix-support/propagated-native-build-inputs)
+      #
+      #   propagatedBuildInputs:       inputs needed at build-time + run-time for a package X,
+      #                                that should also be available in other packages Y that depend on X
+      #                                (-> ./result/nix-support/propagated-build-inputs)
+      #
       xo_cmake_deriv = pkgs.stdenv.mkDerivation
         {
             name = "xo-cmake";
@@ -120,7 +135,8 @@
           version = "0.1";
           src = indentlog_path;
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
-          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 self.packages.${system}.xo_cmake ];
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 ];
+          propagatedBuildInputs = [ ];
         };
       refcnt_deriv = pkgs.stdenv.mkDerivation
         {
@@ -128,7 +144,8 @@
           version = "0.1";
           src = refcnt_path;
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
-          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.xo_cmake xo_pkgs.indentlog ];
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 ];
+          propagatedBuildInputs = [ xo_pkgs.indentlog ];
         };
       subsys_deriv = pkgs.stdenv.mkDerivation
         {
@@ -136,7 +153,8 @@
           version = "0.1";
           src = subsys_path;
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
-          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.xo_cmake ];
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 ];
+          propagatedBuildInputs = [ ];
         };
       reflect_deriv = pkgs.stdenv.mkDerivation
         {
@@ -144,7 +162,8 @@
           version = "0.1";
           src = reflect_path;
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
-          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.xo_cmake xo_pkgs.indentlog xo_pkgs.subsys xo_pkgs.refcnt ];
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 ];
+          propagatedBuildInputs = [ xo_pkgs.subsys xo_pkgs.refcnt ];
         };
       randomgen_deriv = pkgs.stdenv.mkDerivation
         {
@@ -152,7 +171,8 @@
           version = "0.1";
           src = randomgen_path;
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
-          nativeBuildInputs = [ pkgs.cmake xo_pkgs.indentlog ];
+          nativeBuildInputs = [ pkgs.cmake ];
+          propagatedBuildInputs = [ xo_pkgs.indentlog ];
         };
       xo_ordinaltree_deriv = pkgs.stdenv.mkDerivation
         {
@@ -160,7 +180,9 @@
           version = "0.1";
           src = xo_ordinaltree_path;
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
-          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.refcnt xo_pkgs.indentlog xo_pkgs.randomgen ];
+          # note: randomgen needed only at build-time, for unit tests
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.randomgen ];
+          propagatedBuildInputs = [ xo_pkgs.refcnt ];
         };
       xo_pyutil_deriv = pkgs.stdenv.mkDerivation
         {
@@ -168,7 +190,9 @@
           version = "0.1";
           src = xo_pyutil_path;
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
-          nativeBuildInputs = [ pkgs.cmake pkgs.python311Full pkgs.python311Packages.pybind11 pkgs.catch2  ];
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2  ];
+          # we want to enforce: packages depending on this pyutil must all use the same pybind11+python version
+          propagatedBuildInputs = [ pkgs.python311Full pkgs.python311Packages.pybind11 ];
         };
       xo_pyreflect_deriv = pkgs.stdenv.mkDerivation
         {
@@ -177,7 +201,8 @@
           src = xo_pyreflect_path;
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
           buildFlags = ["VERBOSE=1"];
-          nativeBuildInputs = [ pkgs.cmake pkgs.python311Full pkgs.python311Packages.pybind11 pkgs.catch2 xo_pkgs.refcnt xo_pkgs.indentlog xo_pkgs.randomgen xo_pkgs.reflect xo_pkgs.xo_pyutil ];
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.refcnt xo_pkgs.xo_pyutil xo_pkgs.reflect ];
+          propagatedBuildInputs = [ ];
         };
       xo_printjson_deriv = pkgs.stdenv.mkDerivation
         {
@@ -185,7 +210,8 @@
           version = "1.0";
           src = xo_printjson_path;
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
-          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.reflect xo_pkgs.subsys xo_pkgs.refcnt xo_pkgs.indentlog ];
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 ];
+          propagatedBuildInputs = [ xo_pkgs.reflect ];
         };
       xo_callback_deriv = pkgs.stdenv.mkDerivation
         {
@@ -193,7 +219,8 @@
           version = "1.0";
           src = xo_callback_path;
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
-          nativeBuildInputs = [ pkgs.cmake xo_pkgs.refcnt xo_pkgs.indentlog ];
+          nativeBuildInputs = [ pkgs.cmake ];
+          propagatedBuildInputs = [ xo_pkgs.refcnt ];
         };
       xo_webutil_deriv = pkgs.stdenv.mkDerivation
         {
@@ -201,7 +228,8 @@
           version = "1.0";
           src = xo_webutil_path;
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
-          nativeBuildInputs = [ pkgs.cmake xo_pkgs.xo_callback xo_pkgs.refcnt xo_pkgs.indentlog ];
+          nativeBuildInputs = [ pkgs.cmake ];
+          propagatedBuildInputs = [ pkgs.cmake xo_pkgs.xo_callback ];
         };
       xo_reactor_deriv = pkgs.stdenv.mkDerivation
         {
@@ -209,7 +237,9 @@
           version = "1.0";
           src = xo_reactor_path;
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
-          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.xo_webutil xo_pkgs.xo_callback xo_pkgs.reflect xo_pkgs.subsys xo_pkgs.refcnt xo_pkgs.indentlog xo_pkgs.randomgen ];
+          # note: randomgen needed only at build-time, for unit tests
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.randomgen ];
+          propagatedBuildInputs = [ xo_pkgs.xo_webutil xo_pkgs.xo_callback xo_pkgs.reflect ];
         };
 
     in rec {

@@ -67,11 +67,11 @@
     "reflect_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1696884817,
-        "narHash": "sha256-VEZhA+evXJDgCE1k9F/q/8nbOi4ltqpYWQyHcU8HnHQ=",
+        "lastModified": 1697122285,
+        "narHash": "sha256-rekzyddp0aLvNhcTB2Usx5/NKI2jyhCd3Zh74z2iz6k=",
         "owner": "Rconybea",
         "repo": "reflect",
-        "rev": "ccb934e2b5fffd2d02d22ed7ce992310b3da3bd5",
+        "rev": "be6d36a5c80f564de7c6ea100a0a3329da55fa3c",
         "type": "github"
       },
       "original": {
@@ -213,11 +213,11 @@
     "xo_reactor_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1697060839,
-        "narHash": "sha256-VXkDs8W+yXZhRpLYE/W0opjjgvH1AdPVD6ZSvSM8XXg=",
+        "lastModified": 1697118737,
+        "narHash": "sha256-SUDC7a0CfPrjYvOkcGkg6kYM3f30H76WP5kH9jYsi+k=",
         "owner": "Rconybea",
         "repo": "xo-reactor",
-        "rev": "6fd18236eb3733385d22497cac50acbb32bd3c13",
+        "rev": "f2c1c26f40cf8ab8882b46bd4d11e5b3b025e908",
         "type": "github"
       },
       "original": {
