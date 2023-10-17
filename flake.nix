@@ -5,7 +5,15 @@
   # dependencies of this flake
   inputs = {
     #nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/5d017a8822e0907fb96f7700a319f9fe2434de02.tar.gz";
-    nixpkgs.url = "github:nixos/nixpkgs/23.05";
+    #nixpkgs.url = "github:nixos/nixpkgs/23.05";  # this is 23.05 as of it's original release.  e.g. no emacs29
+
+    # to get specific hash:
+    # 1. cd ~/proj/nixpkgs
+    # 2. git checkout release-23.05
+    # 3. git fetch
+    # 4. git pull
+    # 5. git log -1;  take this hash
+    nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/fac3684647cc9d6dfb2a39f3f4b7cf5fc89c96b6.tar.gz";
 
     xo_cmake_path = {
       type = "github";
@@ -14,57 +22,21 @@
       #ref = "v1.0";
       #url = "https://github.com/Rconybea/xo-cmake";
       #rev = "v1.0";
-      flake = false;
-    };
+      flake = false; };
 
-    indentlog_path = {
-      type = "github";
-      owner = "Rconybea";
-      repo = "indentlog";
-      flake = false;
-    };
-
-    refcnt_path = {
-      type = "github";
-      owner = "Rconybea";
-      repo = "refcnt";
-      flake = false;
-    };
-
-    subsys_path = {
-      type = "github";
-      owner = "Rconybea";
-      repo = "subsys";
-      flake = false;
-    };
-
-    reflect_path = {
-      type = "github";
-      owner = "Rconybea";
-      repo = "reflect";
-      flake = false;
-    };
-
-    randomgen_path = {
-      type = "github";
-      owner = "Rconybea";
-      repo = "randomgen";
-      flake = false;
-    };
-
-    xo_ordinaltree_path = {
-      type = "github";
-      owner = "Rconybea";
-      repo = "xo-ordinaltree";
-      flake = false;
-    };
-
-    xo_pyutil_path = { type = "github"; owner = "Rconybea"; repo = "xo-pyutil"; flake = false; };
-    xo_pyreflect_path = { type = "github"; owner = "Rconybea"; repo = "xo-pyreflect"; flake = false; };
-    xo_printjson_path = { type = "github"; owner = "Rconybea"; repo = "xo-printjson"; flake = false; };
-    xo_callback_path = { type = "github"; owner = "Rconybea"; repo = "xo-callback"; flake = false; };
-    xo_webutil_path = { type = "github"; owner = "Rconybea"; repo = "xo-webutil"; flake = false; };
-    xo_reactor_path = { type = "github"; owner = "Rconybea"; repo = "xo-reactor"; flake = false; };
+    indentlog_path      = { type = "github"; owner = "Rconybea"; repo = "indentlog";      flake = false; };
+    refcnt_path         = { type = "github"; owner = "Rconybea"; repo = "refcnt";         flake = false; };
+    subsys_path         = { type = "github"; owner = "Rconybea"; repo = "subsys";         flake = false; };
+    reflect_path        = { type = "github"; owner = "Rconybea"; repo = "reflect";        flake = false; };
+    randomgen_path      = { type = "github"; owner = "Rconybea"; repo = "randomgen";      flake = false; };
+    xo_ordinaltree_path = { type = "github"; owner = "Rconybea"; repo = "xo-ordinaltree"; flake = false; };
+    xo_pyutil_path      = { type = "github"; owner = "Rconybea"; repo = "xo-pyutil";      flake = false; };
+    xo_pyreflect_path   = { type = "github"; owner = "Rconybea"; repo = "xo-pyreflect";   flake = false; };
+    xo_printjson_path   = { type = "github"; owner = "Rconybea"; repo = "xo-printjson";   flake = false; };
+    xo_callback_path    = { type = "github"; owner = "Rconybea"; repo = "xo-callback";    flake = false; };
+    xo_webutil_path     = { type = "github"; owner = "Rconybea"; repo = "xo-webutil";     flake = false; };
+    xo_reactor_path     = { type = "github"; owner = "Rconybea"; repo = "xo-reactor";     flake = false; };
+    xo_websock_path     = { type = "github"; owner = "Rconybea"; repo = "xo-websock";     flake = false; };
 
     # REMEMBER to ADD to outputs BELOW
 
@@ -99,7 +71,8 @@
               xo_printjson_path,
               xo_callback_path,
               xo_webutil_path,
-              xo_reactor_path} :
+              xo_reactor_path,
+              xo_websock_path} :
     let
       system = "x86_64-linux";
       #xo_cmake_dir = self.packages.${system}.xo_cmake;
@@ -176,7 +149,7 @@
         };
       xo_ordinaltree_deriv = pkgs.stdenv.mkDerivation
         {
-          name = "xo_tree";
+          name = "xo_ordinaltree";
           version = "0.1";
           src = xo_ordinaltree_path;
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
@@ -201,8 +174,8 @@
           src = xo_pyreflect_path;
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
           buildFlags = ["VERBOSE=1"];
-          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.refcnt xo_pkgs.xo_pyutil xo_pkgs.reflect ];
-          propagatedBuildInputs = [ ];
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.xo_pyutil ];
+          propagatedBuildInputs = [ xo_pkgs.reflect ];
         };
       xo_printjson_deriv = pkgs.stdenv.mkDerivation
         {
@@ -229,7 +202,7 @@
           src = xo_webutil_path;
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
           nativeBuildInputs = [ pkgs.cmake ];
-          propagatedBuildInputs = [ pkgs.cmake xo_pkgs.xo_callback ];
+          propagatedBuildInputs = [ xo_pkgs.refcnt xo_pkgs.xo_callback ];
         };
       xo_reactor_deriv = pkgs.stdenv.mkDerivation
         {
@@ -239,7 +212,17 @@
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
           # note: randomgen needed only at build-time, for unit tests
           nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.randomgen ];
-          propagatedBuildInputs = [ xo_pkgs.xo_webutil xo_pkgs.xo_callback xo_pkgs.reflect ];
+          propagatedBuildInputs = [ xo_pkgs.xo_webutil xo_pkgs.xo_callback xo_pkgs.reflect xo_pkgs.xo_printjson xo_pkgs.xo_ordinaltree ];
+        };
+      xo_websock_deriv = pkgs.stdenv.mkDerivation
+        {
+          name = "xo_websock";
+          version = "1.0";
+          src = xo_websock_path;
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
+          # note: randomgen needed only at build-time, for unit tests
+          nativeBuildInputs = [ pkgs.cmake pkgs.libwebsockets pkgs.openssl pkgs.jsoncpp ];
+          propagatedBuildInputs = [ xo_pkgs.xo_webutil xo_pkgs.xo_reactor ];
         };
 
     in rec {
@@ -259,22 +242,32 @@
         xo_callback = xo_callback_deriv;
         xo_webutil = xo_webutil_deriv;
         xo_reactor = xo_reactor_deriv;
-
-#        xo_cmake = xo_cmake.packages.${system}.xo_cmake;
-#        indentlog = indentlog_flake.packages.${system}.indentlog;
+        xo_websock = xo_websock_deriv;
 
         ## importing non-flake nix package:
         # mything = pkgs.callPackages ./pkgs/mything {};
       };
 
       devShells.${system} = {
-        default = pkgs.mkShell { packages = [ pkgs.emacs
+        # python311Packages.pybind11: used by xo_pyutil, xo_pyreflect etc.
+        # libwebsockets:              used by xo_websock
+        # openssl:                    used by xo_websock (transitively, via libwebsockets)
+        # jsoncpp:                    used by xo_websock
+        # semgrep:                    emacs->lsp->clangd install needs this
+
+        default = pkgs.mkShell { packages = [ pkgs.emacs29
+                                              pkgs.semgrep
                                               pkgs.cmake
                                               pkgs.catch2
                                               pkgs.which
+                                              pkgs.lcov
+
                                               pkgs.python311Full
                                               pkgs.python311Packages.pybind11
-                                              pkgs.lcov
+
+                                              pkgs.libwebsockets
+                                              pkgs.openssl
+                                              pkgs.jsoncpp
         ]; };
       };
     };
