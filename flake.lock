@@ -87,9 +87,13 @@
         "xo_cmake_path": "xo_cmake_path",
         "xo_ordinaltree_path": "xo_ordinaltree_path",
         "xo_printjson_path": "xo_printjson_path",
+        "xo_pyprintjson_path": "xo_pyprintjson_path",
+        "xo_pyreactor_path": "xo_pyreactor_path",
         "xo_pyreflect_path": "xo_pyreflect_path",
         "xo_pyutil_path": "xo_pyutil_path",
+        "xo_pywebutil_path": "xo_pywebutil_path",
         "xo_reactor_path": "xo_reactor_path",
+        "xo_simulator_path": "xo_simulator_path",
         "xo_websock_path": "xo_websock_path",
         "xo_webutil_path": "xo_webutil_path"
       }
@@ -129,11 +133,11 @@
     "xo_cmake_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1697567691,
-        "narHash": "sha256-Njg+Ih9PRHYRDO5rt7VUq4d2NqEcMF1TmTSLlNEiXxc=",
+        "lastModified": 1697650182,
+        "narHash": "sha256-2N+29QjWcRDw3PQBaoRz9SJJhpJhMXgOsFDgoYcHH98=",
         "owner": "Rconybea",
         "repo": "xo-cmake",
-        "rev": "6a094194f6c94ad3f20ad1e2dc6d6c026ad7ad23",
+        "rev": "70c76bd4a85e4b7bd6dd49c12ce759a68d6ffc13",
         "type": "github"
       },
       "original": {
@@ -174,14 +178,46 @@
         "type": "github"
       }
     },
+    "xo_pyprintjson_path": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1697650479,
+        "narHash": "sha256-geCeY88lmiW9mHpjbBhVrgW8kh5Ph+TPa7hBPrrUgoI=",
+        "owner": "Rconybea",
+        "repo": "xo-pyprintjson",
+        "rev": "36e012934856062dfb8c6f5511ec00dcfcc01819",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rconybea",
+        "repo": "xo-pyprintjson",
+        "type": "github"
+      }
+    },
+    "xo_pyreactor_path": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1697662929,
+        "narHash": "sha256-KP7FXPzLrUNdNeuJoc9ShfKMInHz80xfzLiX6KeCq20=",
+        "owner": "Rconybea",
+        "repo": "xo-pyreactor",
+        "rev": "cc1c42b8c35c3a724d933551d34669e79e67af6c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rconybea",
+        "repo": "xo-pyreactor",
+        "type": "github"
+      }
+    },
     "xo_pyreflect_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1697570038,
-        "narHash": "sha256-/oCmGmQboMqGNm57oODvGPPfIg+dSldoIR6N4rTp2Kk=",
+        "lastModified": 1697658821,
+        "narHash": "sha256-eIlomXIag5rbYl+K5jwXByQvT/q/IcndLfdWxFktwB0=",
         "owner": "Rconybea",
         "repo": "xo-pyreflect",
-        "rev": "bc55885778898247204a3b2392ace02de95e24a2",
+        "rev": "63d63f953f1cdcbb6ddab27ca181973721a953d1",
         "type": "github"
       },
       "original": {
@@ -206,6 +242,22 @@
         "type": "github"
       }
     },
+    "xo_pywebutil_path": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1697660036,
+        "narHash": "sha256-Mx3oSTpcmfaF8rlGYz3hjsnDjCMDpF7PMI4RwO4Px3c=",
+        "owner": "Rconybea",
+        "repo": "xo-pywebutil",
+        "rev": "0b5fffc1208327a2162a71ba6f6325b7df60c545",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rconybea",
+        "repo": "xo-pywebutil",
+        "type": "github"
+      }
+    },
     "xo_reactor_path": {
       "flake": false,
       "locked": {
@@ -222,14 +274,30 @@
         "type": "github"
       }
     },
+    "xo_simulator_path": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1697643512,
+        "narHash": "sha256-B9M4XxXgsuy2Fs06VkIgNNeJXJsycPKDcOYjQN9zM/A=",
+        "owner": "Rconybea",
+        "repo": "xo-websock",
+        "rev": "0de914aea5ff5f9c3bb035b48f6e57ba63221130",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rconybea",
+        "repo": "xo-websock",
+        "type": "github"
+      }
+    },
     "xo_websock_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1697575810,
-        "narHash": "sha256-k+KSVMrMoKV53lF8TQVim/0oUzxpA9qo1ZU41SRVoKM=",
+        "lastModified": 1697643512,
+        "narHash": "sha256-B9M4XxXgsuy2Fs06VkIgNNeJXJsycPKDcOYjQN9zM/A=",
         "owner": "Rconybea",
         "repo": "xo-websock",
-        "rev": "61787846cc4a7466dc8f2621590edc705aac7868",
+        "rev": "0de914aea5ff5f9c3bb035b48f6e57ba63221130",
         "type": "github"
       },
       "original": {

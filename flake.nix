@@ -33,9 +33,13 @@
     xo_pyutil_path      = { type = "github"; owner = "Rconybea"; repo = "xo-pyutil";      flake = false; };
     xo_pyreflect_path   = { type = "github"; owner = "Rconybea"; repo = "xo-pyreflect";   flake = false; };
     xo_printjson_path   = { type = "github"; owner = "Rconybea"; repo = "xo-printjson";   flake = false; };
+    xo_pyprintjson_path = { type = "github"; owner = "Rconybea"; repo = "xo-pyprintjson"; flake = false; };
     xo_callback_path    = { type = "github"; owner = "Rconybea"; repo = "xo-callback";    flake = false; };
     xo_webutil_path     = { type = "github"; owner = "Rconybea"; repo = "xo-webutil";     flake = false; };
+    xo_pywebutil_path   = { type = "github"; owner = "Rconybea"; repo = "xo-pywebutil";   flake = false; };
     xo_reactor_path     = { type = "github"; owner = "Rconybea"; repo = "xo-reactor";     flake = false; };
+    xo_pyreactor_path   = { type = "github"; owner = "Rconybea"; repo = "xo-pyreactor";   flake = false; };
+    xo_simulator_path   = { type = "github"; owner = "Rconybea"; repo = "xo-websock";     flake = false; };
     xo_websock_path     = { type = "github"; owner = "Rconybea"; repo = "xo-websock";     flake = false; };
 
     # REMEMBER to ADD to outputs BELOW
@@ -69,10 +73,14 @@
               xo_pyutil_path,
               xo_pyreflect_path,
               xo_printjson_path,
+              xo_pyprintjson_path,
               xo_callback_path,
               xo_webutil_path,
+              xo_pywebutil_path,
               xo_reactor_path,
-              xo_websock_path} :
+              xo_pyreactor_path,
+              xo_simulator_path,
+              xo_websock_path } :
     let
       system = "x86_64-linux";
       #xo_cmake_dir = self.packages.${system}.xo_cmake;
@@ -173,7 +181,7 @@
           version = "0.1";
           src = xo_pyreflect_path;
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
-          buildFlags = ["VERBOSE=1"];
+          #buildFlags = ["VERBOSE=1"];
           nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.xo_pyutil ];
           propagatedBuildInputs = [ xo_pkgs.reflect ];
         };
@@ -185,6 +193,16 @@
           cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
           nativeBuildInputs = [ pkgs.cmake pkgs.catch2 ];
           propagatedBuildInputs = [ xo_pkgs.reflect ];
+        };
+      xo_pyprintjson_deriv = pkgs.stdenv.mkDerivation
+        {
+          name = "xo_pyprintjson";
+          version = "0.1";
+          src = xo_pyprintjson_path;
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
+          #buildFlags = ["VERBOSE=1"];
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.xo_pyutil ];
+          propagatedBuildInputs = [ xo_pkgs.xo_printjson xo_pkgs.xo_pyreflect ];
         };
       xo_callback_deriv = pkgs.stdenv.mkDerivation
         {
@@ -204,6 +222,15 @@
           nativeBuildInputs = [ pkgs.cmake ];
           propagatedBuildInputs = [ xo_pkgs.refcnt xo_pkgs.xo_callback ];
         };
+      xo_pywebutil_deriv = pkgs.stdenv.mkDerivation
+        {
+          name = "xo_pywebutil";
+          version = "1.0";
+          src = xo_pywebutil_path;
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.xo_pyutil ];
+          propagatedBuildInputs = [ xo_pkgs.xo_webutil ];
+        };
       xo_reactor_deriv = pkgs.stdenv.mkDerivation
         {
           name = "xo_reactor";
@@ -213,6 +240,26 @@
           # note: randomgen needed only at build-time, for unit tests
           nativeBuildInputs = [ pkgs.cmake pkgs.catch2 xo_pkgs.randomgen ];
           propagatedBuildInputs = [ xo_pkgs.xo_webutil xo_pkgs.xo_callback xo_pkgs.reflect xo_pkgs.xo_printjson xo_pkgs.xo_ordinaltree ];
+        };
+      xo_pyreactor_deriv = pkgs.stdenv.mkDerivation
+        {
+          name = "xo_pyreactor";
+          version = "1.0";
+          src = xo_pyreactor_path;
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
+          # note: randomgen needed only at build-time, for unit tests
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 ];
+          propagatedBuildInputs = [ xo_pkgs.xo_reactor xo_pkgs.xo_pyutil xo_pkgs.xo_pyreflect xo_pkgs.xo_pyprintjson ];
+        };
+      xo_simulator_deriv = pkgs.stdenv.mkDerivation
+        {
+          name = "xo_simulator";
+          version = "1.0";
+          src = xo_simulator_path;
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
+          # note: randomgen needed only at build-time, for unit tests
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 ];
+          propagatedBuildInputs = [ xo_pkgs.xo_reactor ];
         };
       xo_websock_deriv = pkgs.stdenv.mkDerivation
         {
@@ -239,9 +286,13 @@
         xo_pyutil = xo_pyutil_deriv;
         xo_pyreflect = xo_pyreflect_deriv;
         xo_printjson = xo_printjson_deriv;
+        xo_pyprintjson = xo_pyprintjson_deriv;
         xo_callback = xo_callback_deriv;
         xo_webutil = xo_webutil_deriv;
+        xo_pywebutil = xo_pywebutil_deriv;
         xo_reactor = xo_reactor_deriv;
+        xo_pyreactor = xo_pyreactor_deriv;
+        xo_simulator = xo_simulator_deriv;
         xo_websock = xo_websock_deriv;
 
         ## importing non-flake nix package:
