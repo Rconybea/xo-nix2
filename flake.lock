@@ -87,6 +87,7 @@
         "xo_cmake_path": "xo_cmake_path",
         "xo_ordinaltree_path": "xo_ordinaltree_path",
         "xo_printjson_path": "xo_printjson_path",
+        "xo_process_path": "xo_process_path",
         "xo_pyprintjson_path": "xo_pyprintjson_path",
         "xo_pyreactor_path": "xo_pyreactor_path",
         "xo_pyreflect_path": "xo_pyreflect_path",
@@ -175,6 +176,22 @@
       "original": {
         "owner": "Rconybea",
         "repo": "xo-printjson",
+        "type": "github"
+      }
+    },
+    "xo_process_path": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1697646113,
+        "narHash": "sha256-w4yiWPWrYbsn21c3KE8sTlYBJWpygnO08tiflw6vsKY=",
+        "owner": "Rconybea",
+        "repo": "xo-process",
+        "rev": "64f6d92f0456054ccf6d6ab5615f2ad96ea3232e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rconybea",
+        "repo": "xo-process",
         "type": "github"
       }
     },
@@ -277,16 +294,16 @@
     "xo_simulator_path": {
       "flake": false,
       "locked": {
-        "lastModified": 1697643512,
-        "narHash": "sha256-B9M4XxXgsuy2Fs06VkIgNNeJXJsycPKDcOYjQN9zM/A=",
+        "lastModified": 1697645998,
+        "narHash": "sha256-EXAQeHGN8f34xHtcG9gnDLhzmIxzvwENNlPaXvSZQoE=",
         "owner": "Rconybea",
-        "repo": "xo-websock",
-        "rev": "0de914aea5ff5f9c3bb035b48f6e57ba63221130",
+        "repo": "xo-simulator",
+        "rev": "69d4c89aa60cd8b101b5cb9b19b93d86736a6050",
         "type": "github"
       },
       "original": {
         "owner": "Rconybea",
-        "repo": "xo-websock",
+        "repo": "xo-simulator",
         "type": "github"
       }
     },

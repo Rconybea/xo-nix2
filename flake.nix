@@ -39,7 +39,8 @@
     xo_pywebutil_path   = { type = "github"; owner = "Rconybea"; repo = "xo-pywebutil";   flake = false; };
     xo_reactor_path     = { type = "github"; owner = "Rconybea"; repo = "xo-reactor";     flake = false; };
     xo_pyreactor_path   = { type = "github"; owner = "Rconybea"; repo = "xo-pyreactor";   flake = false; };
-    xo_simulator_path   = { type = "github"; owner = "Rconybea"; repo = "xo-websock";     flake = false; };
+    xo_simulator_path   = { type = "github"; owner = "Rconybea"; repo = "xo-simulator";   flake = false; };
+    xo_process_path     = { type = "github"; owner = "Rconybea"; repo = "xo-process";     flake = false; };
     xo_websock_path     = { type = "github"; owner = "Rconybea"; repo = "xo-websock";     flake = false; };
 
     # REMEMBER to ADD to outputs BELOW
@@ -80,6 +81,7 @@
               xo_reactor_path,
               xo_pyreactor_path,
               xo_simulator_path,
+              xo_process_path,
               xo_websock_path } :
     let
       system = "x86_64-linux";
@@ -261,6 +263,16 @@
           nativeBuildInputs = [ pkgs.cmake pkgs.catch2 ];
           propagatedBuildInputs = [ xo_pkgs.xo_reactor ];
         };
+      xo_process_deriv = pkgs.stdenv.mkDerivation
+        {
+          name = "xo_process";
+          version = "1.0";
+          src = xo_process_path;
+          cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo_cmake_dir}"];
+          # note: randomgen needed only at build-time, for unit tests
+          nativeBuildInputs = [ pkgs.cmake pkgs.catch2 ];
+          propagatedBuildInputs = [ xo_pkgs.xo_simulator xo_pkgs.randomgen ];
+        };
       xo_websock_deriv = pkgs.stdenv.mkDerivation
         {
           name = "xo_websock";
@@ -293,6 +305,7 @@
         xo_reactor = xo_reactor_deriv;
         xo_pyreactor = xo_pyreactor_deriv;
         xo_simulator = xo_simulator_deriv;
+        xo_process = xo_process_deriv;
         xo_websock = xo_websock_deriv;
 
         ## importing non-flake nix package:
@@ -308,6 +321,7 @@
 
         default = pkgs.mkShell { packages = [ pkgs.emacs29
                                               pkgs.semgrep
+                                              pkgs.ripgrep
                                               pkgs.cmake
                                               pkgs.catch2
                                               pkgs.which
