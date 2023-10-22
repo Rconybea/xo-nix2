@@ -14,6 +14,7 @@
     # 4. git pull
     # 5. git log -1;  take this hash
     nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/fac3684647cc9d6dfb2a39f3f4b7cf5fc89c96b6.tar.gz";
+    # fac3684647.. asof 17oct2023
 
     xo_cmake_path = {
       type = "github";
