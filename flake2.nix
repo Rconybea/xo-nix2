@@ -1,7 +1,16 @@
 {
   description = "Flake utils demo";
 
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/23.05";
+  # to get specific hash:
+  # 1. cd ~/proj/nixpkgs
+  # 2. git checkout release-23.05
+  # 3. git fetch
+  # 4. git pull
+  # 5. git log -1;  take this hash
+  inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/fac3684647cc9d6dfb2a39f3f4b7cf5fc89c96b6.tar.gz";
+  # fac3684647.. asof 17oct2023
+  # instead of
+  #   inputs.nixpkgs.url = "github:nixos/nixpkgs/23.05";
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.xo-cmake-path       = { type = "github"; owner = "Rconybea"; repo = "xo-cmake";       flake = false; };
   inputs.indentlog-path      = { type = "github"; owner = "Rconybea"; repo = "indentlog";      flake = false; };
@@ -217,14 +226,15 @@
           devShells = {
             default = pkgs.mkShell.override
               { stdenv = env; }
-              { packages = [ pkgs.emacs
+              { packages = [ pkgs.emacs29
+                             pkgs.semgrep
+                             pkgs.ripgrep
                              pkgs.inconsolata-lgc
                              pkgs.git
                              pkgs.cmake
                              pkgs.catch2
                              pkgs.which
                              pkgs.less
-                             pkgs.ripgrep
                              pkgs.tree
                              pkgs.lcov
 
@@ -232,6 +242,7 @@
                              pkgs.python311Packages.pybind11
 
                              pkgs.libwebsockets
+                             pkgs.openssl
                              pkgs.jsoncpp
                            ];
               };
