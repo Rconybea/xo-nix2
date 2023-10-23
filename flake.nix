@@ -55,8 +55,8 @@
   flake-utils.lib.eachDefaultSystem
     (system :
       let
-        env = pkgs.stdenv;
-        #env = pkgs.clang16Stdenv;
+        #env = pkgs.stdenv;
+        env = pkgs.clang16Stdenv;
         pkgs = nixpkgs.legacyPackages.${system};
         # .packages introduced below
         xo_pkgs = self.packages.${system};
@@ -246,6 +246,7 @@
                              pkgs.libwebsockets
                              pkgs.openssl
                              pkgs.jsoncpp
+                             pkgs.eigen
                            ];
               };
           };
