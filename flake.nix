@@ -55,8 +55,9 @@
   flake-utils.lib.eachDefaultSystem
     (system :
       let
-        #env = pkgs.stdenv;
-        env = pkgs.clang16Stdenv;
+        env = pkgs.stdenv;
+        # aarch64-darwin aarch64-linux x86_64-darwin:
+        #env = pkgs.clang16Stdenv;
         pkgs = nixpkgs.legacyPackages.${system};
         # .packages introduced below
         xo_pkgs = self.packages.${system};
