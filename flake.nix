@@ -236,6 +236,7 @@
                              pkgs.ripgrep
                              pkgs.inconsolata-lgc
                              pkgs.git
+                             pkgs.openssh
                              pkgs.cmake
                              pkgs.catch2
                              pkgs.which

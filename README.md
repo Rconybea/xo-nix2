@@ -122,8 +122,14 @@ $ nix flake update
 ```
 
 # Development
+
+Creates shell containing all the packages in `devShells.${system}`
 ```
 $ nix develop
 ```
-This creates shell containing all the packages in `devShells.${system}`
+
+Hermetic: similar to above,  but discards everything in user environment except {HOME, TERM, DISPLAY}
 ```
+$ nix develop -i --keep HOME --keep TERM --keep DISPLAY
+```
+
