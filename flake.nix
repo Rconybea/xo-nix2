@@ -229,22 +229,31 @@
             default = pkgs.mkShell.override
               { stdenv = env; }
               # warning: somehow python311Packages.pybind11 still winds up preparing 3.10 libs !?
+              #          putting python 3.10 first -> at least get consistent build
+
               { packages = [ pkgs.python310Full
                              pkgs.python310Packages.pybind11
 
                              # generic dev stack
                              pkgs.llvmPackages_16.clang-unwrapped
                              pkgs.emacs29
+                             pkgs.mu
+	pkgs.emacsPackages.mu4easy
+                             pkgs.inconsolata-lgc
+                             pkgs.sphinx
+                             pkgs.ditaa
                              pkgs.semgrep
                              pkgs.ripgrep
-                             pkgs.inconsolata-lgc
                              pkgs.git
                              pkgs.openssh
                              pkgs.cmake
-                             pkgs.catch2
+                             pkgs.gdb
                              pkgs.which
+                             pkgs.man
+                             pkgs.man-pages
                              pkgs.less
                              pkgs.tree
+                             pkgs.nix-tree
                              pkgs.lcov
 
                              # xo-specific dependencies (also see cmake-examples)
