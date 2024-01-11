@@ -55,7 +55,8 @@
   flake-utils.lib.eachDefaultSystem
     (system :
       let
-        env = pkgs.stdenv;
+        env = (if system == "aarch64-linux" then pkgs.clang16Stdenv else pkgs.stdenv);
+
         # aarch64-darwin aarch64-linux x86_64-darwin:
         #env = pkgs.clang16Stdenv;
         pkgs = nixpkgs.legacyPackages.${system};
@@ -231,6 +232,8 @@
               { packages = [ pkgs.python310Full
                              pkgs.python310Packages.pybind11
 
+                             # generic dev stack
+                             pkgs.llvmPackages_16.clang-unwrapped
                              pkgs.emacs29
                              pkgs.semgrep
                              pkgs.ripgrep
