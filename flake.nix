@@ -247,11 +247,15 @@
                              pkgs.tree
                              pkgs.lcov
 
-
+                             # xo-specific dependencies (also see cmake-examples)
+                             pkgs.catch2
                              pkgs.libwebsockets
                              pkgs.openssl
                              pkgs.jsoncpp
                              pkgs.eigen
+                             pkgs.boost182
+                             pkgs.pkg-config
+                             pkgs.zlib
                            ];
               };
           };
