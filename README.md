@@ -130,6 +130,6 @@ $ nix develop
 
 Hermetic: similar to above,  but discards everything in user environment except {HOME, TERM, DISPLAY}
 ```
-$ nix develop -i --keep HOME --keep TERM --keep DISPLAY
+$ nix develop -i --keep HOME --keep TERM --keep DISPLAY --keep SSH_AUTH_SOCK --keep SSH_AGENT_PID --keep CONFIG_SHELL
 ```
 

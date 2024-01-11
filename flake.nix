@@ -59,7 +59,9 @@
 
         # aarch64-darwin aarch64-linux x86_64-darwin:
         #env = pkgs.clang16Stdenv;
+
         pkgs = nixpkgs.legacyPackages.${system};
+
         # .packages introduced below
         xo_pkgs = self.packages.${system};
         xo_cmake_deriv = env.mkDerivation {
