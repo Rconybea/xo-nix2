@@ -109,7 +109,8 @@ jobs:
           echo "::endgroup"
 
           echo "::group::configure xo-indentlog"
-          cmake -B ${{github.workspace}}/build_xo-indentlog "-DCMAKE_MODULE_PATH=${{github.workspace}}/local/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/local repo/xo-indentlog
+          BUILDDIR=${{github.workspace}}/build_xo-indentlog
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${{github.workspace}}/local/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/local repo/xo-indentlog
           echo "::endgroup"
 
           echo "::group::compile xo-indentlog"
@@ -117,7 +118,7 @@ jobs:
           echo "::endgroup"
 
           echo "::group::test xo-indentlog"
-          ctest -B ${{github.workspace}}/build_xo-indentlog
+          (cd ${{github.workspace}}//build_xo-indentlog && ctest)
           echo "::endgroup"
 
           echo "::group::install xo-indentlog"
