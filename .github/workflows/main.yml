@@ -64,11 +64,11 @@ jobs:
     steps:
       # not using usual checkout actions:  they don't work out-of-the-box from within a container
 
-      - name: print container /include
-        run: tree -L 2 --filelimit 10 /include
-
-      - name: print container /lib
-        run: tree -L 2 --filelimit 10 /lib
+      #- name: print container /include
+      #  run: tree -L 2 --filelimit 10 /include
+      #
+      #- name: print container /lib
+      #  run: tree -L 2 --filelimit 10 /lib
 
       # ----------------------------------------------------------------
       # xo-cmake
