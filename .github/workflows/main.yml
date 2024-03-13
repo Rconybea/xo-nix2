@@ -143,17 +143,17 @@ jobs:
           GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/subsys.git ${XO_SRC}
           echo "::endgroup"
 
-          echo "::group::configure xo-subsys
+          echo "::group::configure xo-subsys"
           BUILDDIR=${{github.workspace}}/build_xo-subsys
           INSTALLDIR=${{github.workspace}}/local
           cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
           echo "::endgroup"
 
-          echo "::group::compile xo-subsys
+          echo "::group::compile xo-subsys"
           cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
           echo "::endgroup"
 
-          #echo "::group::test xo-subsys
+          #echo "::group::test xo-subsys"
           #(cd ${{github.workspace}}//build_xo-subsys && ctest)
           #echo "::endgroup"
 
