@@ -80,9 +80,11 @@ jobs:
           mkdir -p repo/xo-cmake
           GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/xo-cmake.git repo/xo-cmake
           echo "::endgroup"
+
           echo "::group::configure cmake"
           cmake -B ${{github.workspace}}/build_xo-cmake -DCMAKE_MODULE_PATH=/lib/cmake -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/local repo/xo-cmake
           echo "::endgroup"
+
           echo "::group::compile cmake"
           cmake --build ${{github.workspace}}/build_xo-cmake --config ${{env.BUILD_TYPE}}
           echo "::endgroup"
@@ -90,7 +92,8 @@ jobs:
           echo "::group::install cmake"
           cmake --install ${{github.workspace}}/build_xo-cmake
           echo "::endgroup"
-          echo ::group::result (print install-tree)"
+
+          echo "::group::result (print install-tree)"
           tree ${{github.workspace}}/local
           echo "::endgroup"
 
