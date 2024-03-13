@@ -880,7 +880,7 @@ jobs:
           echo "::endgroup"
 
           echo "::group::test [${XO_NAME}]"
-          (cd ${BUILDDIR} && (ctest | ctest --rerunr-failed --output-on-failure)
+          (cd ${BUILDDIR} && (ctest | ctest --rerunr-failed --output-on-failure))
           echo "::endgroup"
 
           echo "::group::install [${XO_NAME}]"
