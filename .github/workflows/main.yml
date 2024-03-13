@@ -91,7 +91,7 @@ jobs:
           tree ${{github.workspace}}/local
 
       - name: print container /include
-        run: tree -L 2 /include
+        run: tree -L 2 --filelimit 10 /include
 
       - name: print container /lib
-        run: tree -L 2 /lib
+        run: tree -L 2 --filelimit 10 /lib
