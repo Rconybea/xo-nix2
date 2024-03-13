@@ -774,9 +774,9 @@ jobs:
           cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
           echo "::endgroup"
 
-          #echo "::group::test [${XO_NAME}]"
-          #(cd ${BUILDDIR} && ctest)
-          #echo "::endgroup"
+          echo "::group::test [${XO_NAME}]"
+          (cd ${BUILDDIR} && ctest)
+          echo "::endgroup"
 
           echo "::group::install [${XO_NAME}]"
           cmake --install ${BUILDDIR}
@@ -794,6 +794,41 @@ jobs:
         run: |
           echo "::group::clone repo"
           XO_NAME=xo-pyprocess
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          #echo "::group::test [${XO_NAME}]"
+          #(cd ${BUILDDIR} && ctest)
+          #echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+      # ----------------------------------------------------------------
+      # xo-statistics
+      # ----------------------------------------------------------------
+
+      - name: xo-statistics
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-statistics
           XO_SRC=repo/${XO_NAME}
           mkdir -p ${XO_SRC}
           GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
