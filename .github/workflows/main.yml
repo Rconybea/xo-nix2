@@ -74,16 +74,9 @@ jobs:
       # xo-cmake
       # ----------------------------------------------------------------
 
-      - name: xo-cmake
-        run:
-          echo "::group::xo-cmake"
-
       - name: prep dir xo-cmake
-        run:
+        run: |
           mkdir -p repo/xo-cmake
-
-      - name: checkout xo-cmake
-        run:
           GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/xo-cmake.git repo/xo-cmake
 
       - name: configure xo-cmake
@@ -101,10 +94,6 @@ jobs:
       - name: print install tree
         run:
           tree ${{github.workspace}}/local
-
-      - name: end xo-cmake
-        run:
-          echo "::endgroup"
 
       # ----------------------------------------------------------------
       # xo-indentlog
