@@ -1,135 +1,85 @@
-See [https://ipetkov.dev/blog/tips-and-tricks-for-nix-flakes](ipetkov blog)
+# Introduction
 
-```
-# NOTE: must be committed to git
-
-$ cd xo-nix2
-$ nix flake check
-```
-
-# Anatomy
-```
-$ nix flake show
-git+file:///home/roland/proj/xo-nix2?ref=refs/heads/main&rev=c5f455b1508ed00ed291ff536e93c69a0fa77cc1
-└───packages
-    └───x86_64-linux
-        ├───cowsay: package 'cowsay-3.7.0'
-        ├───indentlog: package 'indentlog'
-        ├───refcnt: package 'refcnt'
-        ├───reflect: package 'reflect'
-        ├───subsys: package 'subsys'
-        └───xo_cmake: package 'xo-cmake'
-$ nix flake metadata
-Resolved URL:  git+file:///home/roland/proj/xo-nix2
-Locked URL:    git+file:///home/roland/proj/xo-nix2
-Description:   XO flake repo
-Path:          /nix/store/1a9layvq8j93y72a4gyzfcqrqagf17xa-source
-Last modified: 2023-09-28 16:52:31
-Inputs:
-├───indentlog_path: github:Rconybea/indentlog/afd595185b5d4b879a19eb03af3d8e971feffdcc
-├───nixpkgs: github:nixos/nixpkgs/4ecab3273592f27479a583fb6d975d4aba3486fe
-├───refcnt_path: github:Rconybea/refcnt/4e0c8e92f236ebfce2b345b686f8b45fc26ba8b7
-├───reflect_path: github:Rconybea/reflect/94d77bf809900b2458f87dfe43d8698b1910230c
-├───subsys_path: github:Rconybea/subsys/4600ebcb213914af4637b20eaad5cae5bd667dff
-└───xo_cmake_path: github:Rconybea/xo-cmake/f38f48943762a2bc72efd27ef1ee7dbab7ce6ee2
-```
-note: since we provided repo paths in `xo-nix2/flake.nix`:
-```
-    subsys_path = {
-      type = "github";
-      owner = "Rconybea";
-      repo = "subsys";
-      flake = false;
-    };
-    ...
-```
-we get entries in `flake.lock`,  and `nix flake show` displays:
-```
-├───subsys_path: github:Rconybea/subsys/4600ebcb213914af4637b20eaad5cae5bd667dff
-```
-
-in `flake.lock`:
-```
-    ...
-    "subsys_path": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1695853374,
-        "narHash": "sha256-gQju6iPssKI0Sqkw0sh4yfmYJjbSOM3by3UbahT6gIc=",
-        "owner": "Rconybea",
-        "repo": "subsys",
-        "rev": "4600ebcb213914af4637b20eaad5cae5bd667dff",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Rconybea",
-        "repo": "subsys",
-        "type": "github"
-      }
-    },
-    ...
-```
-
-```
-$ cat flake.lock
-{
-  "nodes": {
-    "indentlog_path": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1695853401,
-        "narHash": "sha256-CBuUuFAPvFvAEQAW5UlLX7bn6IUJogDwFgOAQmrzJQ4=",
-        "owner": "Rconybea",
-        "repo": "indentlog",
-        "rev": "afd595185b5d4b879a19eb03af3d8e971feffdcc",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Rconybea",
-        "repo": "indentlog",
-        "type": "github"
-      }
-    },
-    "nixpkgs": {
-      "locked": {
-        "lastModified": 1685566663,
-        "narHash": "sha256-btHN1czJ6rzteeCuE/PNrdssqYD2nIA4w48miQAFloM=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "4ecab3273592f27479a583fb6d975d4aba3486fe",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "23.05",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    ...
-```
+- Nix build for xo libraries.
+- Motivation/Discussion: https://rconybea.github.io/web/nix/nix-for-your-own-project.html
 
 # Build
+
 ```
-$ nix build .#reflect
+$ nix build -L --print-build-logs .#xo-cmake
+$ nix build -L --print-build-logs .#xo-indentlog
 ```
+
+Can omit `-L --print-build-logs` for terse output
 
 # Update versions
 
-(changes hashes in `flake.lock`)
+Updates hashes in `flake.lock` it some upstream repo has changed
 ```
 $ nix flake update
 ```
 
-# Development
+# Develop
 
-Creates shell containing all the packages in `devShells.${system}`
+Creates shell containing all the packages in `devShells.${system}`.
+On top of existing environment (prepends PATH etc)
+
 ```
 $ nix develop
 ```
 
-Hermetic: similar to above,  but discards everything in user environment except {HOME, TERM, DISPLAY}
+Hermetic: similar to above,  but discards everything already in user environment
+```
+$ nix develop -i
+```
+
+Hermetic with exceptions: preserve identified environment variables
 ```
 $ nix develop -i --keep HOME --keep TERM --keep DISPLAY --keep SSH_AUTH_SOCK --keep SSH_AGENT_PID --keep CONFIG_SHELL
 ```
 
+# Examine flake contents
+
+```
+$ nix flake show
+git+file:///home/roland/proj/xo-nix4
+├───devShells
+|   |   ...
+│   └───x86_64-linux
+│       └───default: development environment 'nix-shell'
+├───overlays
+    ...
+    └───x86_64-linux
+        ├───xo-callback: package 'xo-callback'
+        ├───xo-cmake: package 'xo-cmake'
+        ├───xo-distribution: package 'xo-distribution'
+        ├───xo-indentlog: package 'xo-indentlog'
+        ├───xo-kalmanfilter: package 'xo-kalmanfilter'
+        ├───xo-ordinaltree: package 'xo-ordinaltree'
+        ├───xo-printjson: package 'xo-printjson'
+```
+
+# Examine pins
+
+```
+$ nix flake metadata
+Resolved URL:  git+file:///home/roland/proj/xo-nix4
+Locked URL:    git+file:///home/roland/proj/xo-nix4
+Description:   xo: c++/python libraries for complex event processing
+Path:          /nix/store/2ngdimpb8jy0dnyqrf5rrqz1q6m0286n-source
+Last modified: 2024-03-12 21:05:41
+Inputs:
+├───flake-utils: github:numtide/flake-utils/b1d9ab70662946ef0850d488da1c9019f3a9752a
+│   └───systems: github:nix-systems/default/da67096a3b9bf56a91d16901293e51ba5b49a27e
+├───nixpkgs: https://github.com/NixOS/nixpkgs/archive/217b3e910660fbf603b0995a6d2c3992aef4cc37.tar.gz?narHash=sha256-ci7ghtn0YKXw68Wkufou0DK3pwTmkfWeFOYkRsnLagc%3D
+├───xo-callback-path: github:Rconybea/xo-callback/dd01874b2ea023202f3084f92c31199e7fa03e2c
+├───xo-cmake-path: github:Rconybea/xo-cmake/ffd8e9dca998712c5edfa1898b0745271d54176e
+├───xo-distribution-path: github:Rconybea/xo-distribution/09cb38f26565d769d89bee5eefadd5fe3bfad3db
+...
+```
+
+# Links
+
+- https://github.com/vlktomas/nix-examples         Tomas Vlk nix examples
+- https://ryantm.github.io/nixpkgs/stdenv/stdenv   nix stdenv
+- https://jade.fyi/blog/#flakes-arent-real         Jade Lovelace editorial on flakes+nixpkgs
