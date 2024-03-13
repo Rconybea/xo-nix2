@@ -76,12 +76,13 @@ jobs:
 
       - name: prep dir xo-cmake
         run: |
+          echo "::group::clone repo"
           mkdir -p repo/xo-cmake
           GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/xo-cmake.git repo/xo-cmake
-
-      - name: configure xo-cmake
-        run:
+          echo "::endgroup"
+          echo "::group::configure cmake"
           cmake -B ${{github.workspace}}/build_xo-cmake -DCMAKE_MODULE_PATH=/lib/cmake -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/local repo/xo-cmake
+          echo "::endgroup"
 
       - name: build xo-cmake
         run:
