@@ -74,22 +74,22 @@ jobs:
       # xo-cmake
       # ----------------------------------------------------------------
 
-      - name: prep dir xo-cmake
+      - name: xo-cmake
         run: |
-          echo "::group::clone repo"
+          echo "::group::clone xo-cmake repo"
           mkdir -p repo/xo-cmake
           GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/xo-cmake.git repo/xo-cmake
           echo "::endgroup"
 
-          echo "::group::configure cmake"
+          echo "::group::configure xo-cmake"
           cmake -B ${{github.workspace}}/build_xo-cmake -DCMAKE_MODULE_PATH=/lib/cmake -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/local repo/xo-cmake
           echo "::endgroup"
 
-          echo "::group::compile cmake"
+          echo "::group::compile xo-cmake"
           cmake --build ${{github.workspace}}/build_xo-cmake --config ${{env.BUILD_TYPE}}
           echo "::endgroup"
 
-          echo "::group::install cmake"
+          echo "::group::install xo-cmake macros"
           cmake --install ${{github.workspace}}/build_xo-cmake
           echo "::endgroup"
 
@@ -101,27 +101,32 @@ jobs:
       # xo-indentlog
       # ----------------------------------------------------------------
 
-      - name: prep dir indentlog
-        run:  mkdir -p repo/indentlog
+      - name: xo-indentlog
+        run: |
+          echo "::group::clone repo"
+          mkdir -p repo/xo-indentlog
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/indentlog.git repo/xo-indentlog
+          echo "::endgroup"
 
-      - name: checkout indentlog
-        run:  GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/indentlog.git repo/indentlog
+          echo "::group::configure xo-indentlog"
+          cmake -B ${{github.workspace}}/build_xo-indentlog "-DCMAKE_MODULE_PATH=${{github.workspace}}/local/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/local repo/xo-indentlog
+          echo "::endgroup"
 
-      - name: configure indentlog
-        run:  cmake -B ${{github.workspace}}/build_indentlog "-DCMAKE_MODULE_PATH=${{github.workspace}}/local/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/local repo/indentlog
+          echo "::group::compile xo-indentlog"
+          cmake --build ${{github.workspace}}/build_xo-indentlog --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
 
-      - name: build indentlog
-        run: cmake --build ${{github.workspace}}/build_indentlog --config ${{env.BUILD_TYPE}} --verbose
+          echo "::group::test xo-indentlog"
+          ctest -B ${{github.workspace}}/build_xo-indentlog
+          echo "::endgroup"
 
-      - name: test indentlog
-        run: ctest -B ${{github.workspace}}/build_indentlog
+          echo "::group::install xo-indentlog"
+          cmake --install ${{github.workspace}}/build_xo-indentlog
+          echo "::endgroup"
 
-      - name: install indentlog
-        run: cmake --install ${{github.workspace}}/build_indentlog
-
-      - name: print install tree
-        run:
+          echo "::group::result (print install-tree)"
           tree ${{github.workspace}}/local
+          echo "::endgroup"
 
       # ----------------------------------------------------------------
       # TODO:
