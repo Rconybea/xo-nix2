@@ -138,26 +138,27 @@ jobs:
       - name: xo-subsys
         run: |
           echo "::group::clone repo"
-          XO_SRC=repo/xo-subsys
+          XO_NAME=xo-subsys
+          XO_SRC=repo/${XO_NAME}
           mkdir -p ${XO_SRC}
           GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/subsys.git ${XO_SRC}
           echo "::endgroup"
 
-          echo "::group::configure xo-subsys"
-          BUILDDIR=${{github.workspace}}/build_xo-subsys
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
           INSTALLDIR=${{github.workspace}}/local
           cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
           echo "::endgroup"
 
-          echo "::group::compile xo-subsys"
+          echo "::group::compile ${XO_NAME}
           cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
           echo "::endgroup"
 
-          #echo "::group::test xo-subsys"
-          #(cd ${{github.workspace}}//build_xo-subsys && ctest)
+          #echo "::group::test [${XO_NAME}]"
+          #(cd ${BUILDDIR} && ctest)
           #echo "::endgroup"
 
-          echo "::group::install xo-subsys"
+          echo "::group::install [${XO_NAME}]"
           cmake --install ${BUILDDIR}
           echo "::endgroup"
 
@@ -166,9 +167,45 @@ jobs:
           echo "::endgroup"
 
       # ----------------------------------------------------------------
+      # xo-refcnt
+      # ----------------------------------------------------------------
+
+      - name: xo-refcnt
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-refcnt
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/refcnt.git ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile ${XO_NAME}
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          #echo "::group::test ${XO_NAME}
+          #(cd ${BUILDDIR} && ctest)
+          #echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+
+
+      # ----------------------------------------------------------------
       # TODO:
       #
-      # xo-refcnt
       # xo-randomgen
       # xo-ordinaltree
       # xo-pyutil
