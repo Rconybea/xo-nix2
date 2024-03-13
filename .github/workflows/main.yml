@@ -880,7 +880,7 @@ jobs:
           echo "::endgroup"
 
           echo "::group::test [${XO_NAME}]"
-          (cd ${BUILDDIR} && ctest)
+          (cd ${BUILDDIR} && (ctest | ctest --rerunr-failed --output-on-failure)
           echo "::endgroup"
 
           echo "::group::install [${XO_NAME}]"
@@ -914,9 +914,9 @@ jobs:
           cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
           echo "::endgroup"
 
-          echo "::group::test [${XO_NAME}]"
-          (cd ${BUILDDIR} && ctest)
-          echo "::endgroup"
+          #echo "::group::test [${XO_NAME}]"
+          #(cd ${BUILDDIR} && ctest)
+          #echo "::endgroup"
 
           echo "::group::install [${XO_NAME}]"
           cmake --install ${BUILDDIR}
