@@ -104,17 +104,19 @@ jobs:
       - name: xo-indentlog
         run: |
           echo "::group::clone repo"
-          mkdir -p repo/xo-indentlog
-          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/indentlog.git repo/xo-indentlog
+          XO_SRC=repo/xo-indentlog
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/indentlog.git ${XO_SRC}
           echo "::endgroup"
 
           echo "::group::configure xo-indentlog"
           BUILDDIR=${{github.workspace}}/build_xo-indentlog
-          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${{github.workspace}}/local/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/local repo/xo-indentlog
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
           echo "::endgroup"
 
           echo "::group::compile xo-indentlog"
-          cmake --build ${{github.workspace}}/build_xo-indentlog --config ${{env.BUILD_TYPE}} --verbose
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
           echo "::endgroup"
 
           echo "::group::test xo-indentlog"
@@ -122,17 +124,50 @@ jobs:
           echo "::endgroup"
 
           echo "::group::install xo-indentlog"
-          cmake --install ${{github.workspace}}/build_xo-indentlog
+          cmake --install ${BUILDDIR}
           echo "::endgroup"
 
           echo "::group::result (print install-tree)"
-          tree ${{github.workspace}}/local
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+      # ----------------------------------------------------------------
+      # xo-subsys
+      # ----------------------------------------------------------------
+
+      - name: xo-subsys
+        run: |
+          echo "::group::clone repo"
+          XO_SRC=repo/xo-subsys
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/subsys.git ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure xo-subsys
+          BUILDDIR=${{github.workspace}}/build_xo-subsys
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile xo-subsys
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          #echo "::group::test xo-subsys
+          #(cd ${{github.workspace}}//build_xo-subsys && ctest)
+          #echo "::endgroup"
+
+          echo "::group::install xo-subsys"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
           echo "::endgroup"
 
       # ----------------------------------------------------------------
       # TODO:
       #
-      # xo-subsys
       # xo-refcnt
       # xo-randomgen
       # xo-ordinaltree
