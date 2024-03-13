@@ -111,6 +111,12 @@
           = system :
             let
               pkgs = nixpkgs.legacyPackages.${system};
+
+              # could try using
+              #   appliedOverlay = (pkgs.extend self.overlays.default)
+              # but it doesn't seem to work the way I expect,
+              # For example, wants to pickup 2.7.11 python for xo-pyutil !
+              #
               appliedOverlay = self.overlays.default pkgs pkgs;
 
             in
@@ -341,9 +347,6 @@
                 xo-websock =
                   (prev.callPackage ./pkgs/xo-websock.nix { xo-cmake = xo-cmake;
                                                             xo-reactor = xo-reactor;
-                                                            #xo-pyutil = xo-pyutil;
-                                                            #xo-kalmanfilter = xo-kalmanfilter;
-                                                            #xo-pyreactor = xo-pyreactor;
                                                                }).overrideAttrs
                     (old: { src = xo-websock-path; });
 
@@ -352,8 +355,6 @@
                                                               xo-websock = xo-websock;
                                                               xo-pyutil = xo-pyutil;
                                                               xo-pywebutil = xo-pywebutil;
-                                                              #xo-kalmanfilter = xo-kalmanfilter;
-                                                              #xo-pyreactor = xo-pyreactor;
                                                             }).overrideAttrs
                     (old: { src = xo-pywebsock-path; });
 
@@ -363,6 +364,30 @@
                 xo-userenv =
                   (prev.callPackage ./pkgs/xo-userenv.nix { xo-cmake = xo-cmake;
                                                             xo-indentlog = xo-indentlog;
+                                                            xo-callback = xo-callback;
+                                                            xo-subsys = xo-subsys;
+                                                            xo-refcnt = xo-refcnt;
+                                                            xo-randomgen = xo-randomgen;
+                                                            xo-ordinaltree = xo-ordinaltree;
+                                                            xo-pyutil = xo-pyutil;
+                                                            xo-reflect = xo-reflect;
+                                                            xo-pyreflect = xo-pyreflect;
+                                                            xo-printjson = xo-printjson;
+                                                            xo-pyprintjson = xo-pyprintjson;
+                                                            xo-webutil = xo-webutil;
+                                                            xo-pywebutil = xo-pywebutil;
+                                                            xo-reactor = xo-reactor;
+                                                            xo-pyreactor = xo-pyreactor;
+                                                            xo-simulator = xo-simulator;
+                                                            xo-distribution = xo-distribution;
+                                                            xo-pydistribution = xo-pydistribution;
+                                                            xo-process = xo-process;
+                                                            xo-pyprocess = xo-pyprocess;
+                                                            xo-statistics = xo-statistics;
+                                                            xo-kalmanfilter = xo-kalmanfilter;
+                                                            xo-pykalmanfilter = xo-pykalmanfilter;
+                                                            xo-websock = xo-websock;
+                                                            xo-pywebsock = xo-pywebsock;
                                                           }).overrideAttrs(old: {});
 
 
@@ -415,6 +440,7 @@
                             pythonPackages.sphinx
                             pythonPackages.sphinx-rtd-theme
                             pythonPackages.breathe
+                            # pythonPackages.pyarrow
 
                             prev.llvmPackages_16.clang-unwrapped
 
@@ -441,6 +467,7 @@
                             prev.nix-tree
                             prev.lcov
 
+                            prev.arrow-cpp
                             prev.libwebsockets
                             prev.jsoncpp
                             prev.eigen
