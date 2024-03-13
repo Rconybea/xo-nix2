@@ -213,7 +213,7 @@ jobs:
           XO_NAME=xo-randomgen
           XO_SRC=repo/${XO_NAME}
           mkdir -p ${XO_SRC}
-          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME}.git ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/randomgen.git ${XO_SRC}
           echo "::endgroup"
 
           echo "::group::configure [${XO_NAME}]"
