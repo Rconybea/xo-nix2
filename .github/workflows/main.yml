@@ -74,6 +74,10 @@ jobs:
       # xo-cmake
       # ----------------------------------------------------------------
 
+      - name: xo-cmake
+        run:
+          echo "::group::xo-cmake"
+
       - name: prep dir xo-cmake
         run:
           mkdir -p repo/xo-cmake
@@ -97,6 +101,10 @@ jobs:
       - name: print install tree
         run:
           tree ${{github.workspace}}/local
+
+      - name: end xo-cmake
+        run:
+          echo "::endgroup"
 
       # ----------------------------------------------------------------
       # xo-indentlog
