@@ -29,7 +29,7 @@
 #         +- bin
 #
 # 4. container filesystem
-#      /          (root)
+#      |          (root)
 #      +- bin...
 #      +- lib
 #      |  +- cmake
@@ -86,8 +86,12 @@ jobs:
         run:
           cmake --install ${{github.workspace}}/build_xo-cmake
 
-      - name: print something
-        run: tree /include
+      - name: print install tree
+        run:
+          tree ${{github.workspace}}/local
 
-      - name: print something else
-        run: tree /lib
+      - name: print container /include
+        run: tree -L 2 /include
+
+      - name: print container /lib
+        run: tree -L 2 /lib
