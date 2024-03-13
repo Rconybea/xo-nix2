@@ -78,6 +78,12 @@ Inputs:
 ...
 ```
 
+# Pull changes made elsewhere
+```
+$ nix flake update
+$ nix build .#xo-foo
+```
+
 # Links
 
 - https://github.com/vlktomas/nix-examples         Tomas Vlk nix examples
