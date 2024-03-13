@@ -83,18 +83,16 @@ jobs:
           echo "::group::configure cmake"
           cmake -B ${{github.workspace}}/build_xo-cmake -DCMAKE_MODULE_PATH=/lib/cmake -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/local repo/xo-cmake
           echo "::endgroup"
-
-      - name: build xo-cmake
-        run:
+          echo "::group::compile cmake"
           cmake --build ${{github.workspace}}/build_xo-cmake --config ${{env.BUILD_TYPE}}
+          echo "::endgroup"
 
-      - name: install xo-cmake
-        run:
+          echo "::group::install cmake"
           cmake --install ${{github.workspace}}/build_xo-cmake
-
-      - name: print install tree
-        run:
+          echo "::endgroup"
+          echo ::group::result (print install-tree)"
           tree ${{github.workspace}}/local
+          echo "::endgroup"
 
       # ----------------------------------------------------------------
       # xo-indentlog
