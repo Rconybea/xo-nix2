@@ -153,6 +153,7 @@
                 packages.xo-pywebsock = appliedOverlay.xo-pywebsock;
                 # placeholder-C
 
+                packages.xo-userenv = appliedOverlay.xo-userenv;
                 devShells = appliedOverlay.devShells;
               };
       in
@@ -358,8 +359,19 @@
 
                 # placeholder-D
 
+                # user environment with all xo libraries present
+                xo-userenv =
+                  (prev.callPackage ./pkgs/xo-userenv.nix { xo-cmake = xo-cmake;
+                                                            xo-indentlog = xo-indentlog;
+                                                          }).overrideAttrs(old: {});
+
+
               in
                 # attrs in this set provide derivations with all overlay changes applied.
+                #
+                # REMINDER: need expression like
+                #             packages.xo-foo = appliedOverlay.xo-foo;
+                #           above to export
                 {
                   xo-cmake = xo-cmake;
                   xo-indentlog = xo-indentlog;
@@ -388,6 +400,8 @@
                   xo-websock = xo-websock;
                   xo-pywebsock = xo-pywebsock;
                   # placeholder-E
+
+                  xo-userenv = xo-userenv;
 
                   devShells = {
                     default = prev.mkShell.override
