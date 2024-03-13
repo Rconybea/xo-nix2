@@ -6,6 +6,14 @@
 #    has read permission on public resources + read/write permission on this repo
 #
 # 2. container built from [[https:github.com:rconybea/docker-xo-builder]]
+#    Includes dependencies:
+#    - compiler toolchain:  gcc, binutils, bash, etc
+#    - git
+#    - cmake
+#    - catch2
+#    - pybind11 + python
+#    - libwebsockets
+#    - jsoncpp
 #
 # 3. runner filesystem as build completes:
 #
@@ -347,9 +355,44 @@ jobs:
           echo "::endgroup"
 
 
+      # ----------------------------------------------------------------
+      # xo-pyreflect
+      # ----------------------------------------------------------------
+
+      - name: xo-pyreflect
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-pyreflect
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          echo "::group::test [${XO_NAME}]"
+          (cd ${BUILDDIR} && ctest)
+          echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+
       # TODO:
       #
-      # xo-reflect
       # xo-pyreflect
       # xo-printjson
       # xo-pyprintjson
