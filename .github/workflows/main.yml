@@ -64,6 +64,14 @@ jobs:
     steps:
       # not using usual checkout actions:  they don't work out-of-the-box from within a container
 
+      - name: print container /include
+        run: tree -L 2 --filelimit 10 /include
+
+      - name: print container /lib
+        run: tree -L 2 --filelimit 10 /lib
+
+      # ----------------------------------------------------------------
+      # xo-cmake
       # ----------------------------------------------------------------
 
       - name: prep dir xo-cmake
@@ -90,8 +98,57 @@ jobs:
         run:
           tree ${{github.workspace}}/local
 
-      - name: print container /include
-        run: tree -L 2 --filelimit 10 /include
+      # ----------------------------------------------------------------
+      # xo-indentlog
+      # ----------------------------------------------------------------
 
-      - name: print container /lib
-        run: tree -L 2 --filelimit 10 /lib
+      - name: prep dir indentlog
+        run:  mkdir -p repo/indentlog
+
+      - name: checkout indentlog
+        run:  GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/indentlog.git repo/indentlog
+
+      - name: configure indentlog
+        run:  cmake -B ${{github.workspace}}/build_indentlog "-DCMAKE_MODULE_PATH=${{github.workspace}}/local/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/local repo/indentlog
+
+      - name: build indentlog
+        run: cmake --build ${{github.workspace}}/build_indentlog --config ${{env.BUILD_TYPE}} --verbose
+
+      - name: test indentlog
+        run: ctest -B ${{github.workspace}}/build_indentlog
+
+      - name: install indentlog
+        run: cmake --install ${{github.workspace}}/build_indentlog
+
+      - name: print install tree
+        run:
+          tree ${{github.workspace}}/local
+
+      # ----------------------------------------------------------------
+      # TODO:
+      #
+      # xo-subsys
+      # xo-refcnt
+      # xo-randomgen
+      # xo-ordinaltree
+      # xo-pyutil
+      # xo-reflect
+      # xo-pyreflect
+      # xo-printjson
+      # xo-pyprintjson
+      # xo-callback
+      # xo-webutil
+      # xo-pywebutil
+      # xo-reactor
+      # xo-pyreactor
+      # xo-simulator
+      # xo-distribution
+      # xo-pydistribution
+      # xo-process
+      # xo-pyprocess
+      # xo-statistics
+      # xo-kalmanfilter
+      # xo-pykalmanfilter
+      # xo-websock
+      # xo-pywebsock
+      # ----------------------------------------------------------------
