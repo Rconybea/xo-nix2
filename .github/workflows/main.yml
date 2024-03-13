@@ -262,7 +262,7 @@ jobs:
           cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
           echo "::endgroup"
 
-          echo "::group::test ${XO_NAME}
+          echo "::group::test [${XO_NAME}]"
           (cd ${BUILDDIR} && ctest)
           echo "::endgroup"
 
