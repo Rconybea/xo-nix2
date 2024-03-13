@@ -150,7 +150,7 @@ jobs:
           cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
           echo "::endgroup"
 
-          echo "::group::compile ${XO_NAME}
+          echo "::group::compile [${XO_NAME}]"
           cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
           echo "::endgroup"
 
@@ -185,7 +185,7 @@ jobs:
           cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
           echo "::endgroup"
 
-          echo "::group::compile ${XO_NAME}
+          echo "::group::compile [${XO_NAME}]"
           cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
           echo "::endgroup"
 
