@@ -46,6 +46,8 @@
 
   inputs.libgit2-path = { url = "github:libgit2/libgit2"; flake = false; };
 
+  inputs.nix-nix-path = { url = "github:Nixos/nix"; flake = false; };
+
   # To add a new package,  visit placeholder-A .. placeholder-E
 
   inputs.xo-cmake-path          = { type = "github"; owner = "Rconybea"; repo = "xo-cmake";          flake = false; };
@@ -81,6 +83,7 @@
       nixpkgs,
       flake-utils,
       libgit2-path,
+      nix-nix-path,
       xo-cmake-path,
       xo-indentlog-path,
       xo-refcnt-path,
@@ -171,7 +174,7 @@
                 # so we can build independently ($ nix build -L --print-build-logs .#libgit2-nix)
                 packages.libgit2-nix = appliedOverlay.libgit2-nix;
                 packages.boehmgc-nix = appliedOverlay.boehmgc-nix;
-                packages.nix = appliedOverlay.nix;
+                packages.nix-nix = appliedOverlay.nix-nix;
 
                 devShells = appliedOverlay.devShells;
               };
@@ -248,12 +251,12 @@
 
                 # adapted from nix repo toplevel flake.nix.
                 # (focusing on call callPacakge on package.nix)
-                nix = 
+                nix-nix = 
                   let
                     officialRelease = false;
                     versionSuffix = "xospecial";
                     
-                  in prev.callPackage ./pkgs/nix.nix  # was ./package.nix in ~/proj/nix
+                  in (prev.callPackage ./pkgs/nix.nix  # was ./package.nix in ~/proj/nix
                     {
                       officialRelease = officialRelease;
                       fileset = fileset;
@@ -265,7 +268,8 @@
                       busybox-sandbox-shell = final.busybox-sandbox-shell or final.default-busybox-sandbox-shell;
                     } // {
                       #perl-bindings = final.nix-perl-bindings;
-                    };
+                    }).overrideAttrs
+                    (old: { src = nix-nix-path; });
 
                 #extras1 = { boost = boost; };
                 #extras2 = { boost = boost; python3Packages = python3Packages; pybind11 = pybind11; };
@@ -510,7 +514,7 @@
 
                   libgit2-nix = libgit2-nix;
                   boehmgc-nix = boehmgc-nix;
-                  nix = nix;
+                  nix-nix = nix-nix;
 
                   devShells = {
                     default = prev.mkShell.override
