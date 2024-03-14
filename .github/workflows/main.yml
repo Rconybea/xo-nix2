@@ -64,7 +64,7 @@ env:
 
 jobs:
   build_job:
-    name: compile XO projects, using prepared docker container
+    name: XO layercake build on docker-xo-builder
     runs-on: ubuntu-latest
     container:
       # custom docker image.  see github.com:rconybea/docker-xo-builder for definition

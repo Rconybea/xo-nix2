@@ -30,7 +30,7 @@ env:
 
 jobs:
   build_job:
-    name: compile XO projects, using prepared nix-enabled docker container
+    name: XO nix build on docker-nix-builder
     runs-on: ubuntu-latest
     container:
       # custom docker image. see github.com:rconybea/docker-nix-builder for definition
@@ -42,7 +42,7 @@ jobs:
       run: |
         echo "::group::clone xo-nix2 repo"
         mkdir -p repo/xo-nix2
-        GIT_SSL_NO_VERIFY=true git clone https://${env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/xo-nix2.git repo/xo-nix2
+        GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/xo-nix2.git repo/xo-nix2
         echo "::endgroup"
 
         echo "::group::build xo-cmake with nix"
