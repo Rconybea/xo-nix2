@@ -118,3 +118,11 @@ jobs:
         (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-pydistribution && tree ./result)
         echo "::endgroup"
 
+        echo "::group::build xo-process with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-process && tree ./result)
+        echo "::endgroup"
+
+        echo "::group::build xo-pyprocess with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-pyprocess && tree ./result)
+        echo "::endgroup"
+
