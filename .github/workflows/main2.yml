@@ -110,3 +110,11 @@ jobs:
         (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-simulator && tree ./result)
         echo "::endgroup"
 
+        echo "::group::build xo-distribution with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-distribution && tree ./result)
+        echo "::endgroup"
+
+        echo "::group::build xo-pydistribution with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-pydistribution && tree ./result)
+        echo "::endgroup"
+
