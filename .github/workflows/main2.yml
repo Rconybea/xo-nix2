@@ -61,4 +61,28 @@ jobs:
         (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-refcnt && tree ./result)
         echo "::endgroup"
 
+        echo "::group::build xo-randomgen with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-randomgen && tree ./result)
+        echo "::endgroup"
+
+        echo "::group::build xo-ordinaltree with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-ordinaltree && tree ./result)
+        echo "::endgroup"
+
+        echo "::group::build xo-pyutil with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-pyutil && tree ./result)
+        echo "::endgroup"
+
+        echo "::group::build xo-pyreflect with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-pyreflect && tree ./result)
+        echo "::endgroup"
+
+        echo "::group::build xo-printjson with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-printjson && tree ./result)
+        echo "::endgroup"
+
+        echo "::group::build xo-pyprintjson with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-pyprintjson && tree ./result)
+        echo "::endgroup"
+
         
