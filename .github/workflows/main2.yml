@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       # custom docker image. see github.com:rconybea/docker-nix-builder for definition
-      image:ghcr.io/rconybea/docker-nix-builder:v1
+      image: ghcr.io/rconybea/docker-nix-builder:v1
     steps:
       # not using usual checkout actions:  they don't work out-of-the-box from within a container
 
