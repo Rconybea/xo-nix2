@@ -106,3 +106,7 @@ jobs:
         (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-pyreactor && tree ./result)
         echo "::endgroup"
 
+        echo "::group::build xo-simulator with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-simulator && tree ./result)
+        echo "::endgroup"
+
