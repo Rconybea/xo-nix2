@@ -137,3 +137,6 @@ jobs:
         (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-pykalmanfilter && tree ./result)
         echo "::endgroup"
 
+        echo "::group::build xo-userenv with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-userenv && tree ./result)
+        echo "::endgroup"
