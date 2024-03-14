@@ -53,4 +53,12 @@ jobs:
         (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-indentlog && tree ./result)
         echo "::endgroup"
 
+        echo "::group::build xo-subsys with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-subsys && tree ./result)
+        echo "::endgroup"
+
+        echo "::group::build xo-refcnt with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-refcnt && tree ./result)
+        echo "::endgroup"
+
         
