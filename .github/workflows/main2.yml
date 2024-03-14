@@ -86,3 +86,15 @@ jobs:
         echo "::endgroup"
 
         
+        echo "::group::build xo-callback with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-callback && tree ./result)
+        echo "::endgroup"
+
+        echo "::group::build xo-webutil with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-webutil && tree ./result)
+        echo "::endgroup"
+
+        echo "::group::build xo-pywebutil with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-pywebutil && tree ./result)
+        echo "::endgroup"
+
