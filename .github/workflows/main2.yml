@@ -85,7 +85,6 @@ jobs:
         (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-pyprintjson && tree ./result)
         echo "::endgroup"
 
-        
         echo "::group::build xo-callback with nix"
         (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-callback && tree ./result)
         echo "::endgroup"
@@ -128,5 +127,13 @@ jobs:
 
         echo "::group::build xo-statistics with nix"
         (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-statistics && tree ./result)
+        echo "::endgroup"
+
+        echo "::group::build xo-kalmanfilter with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-kalmanfilter && tree ./result)
+        echo "::endgroup"
+
+        echo "::group::build xo-pykalmanfilter with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-pykalmanfilter && tree ./result)
         echo "::endgroup"
 
