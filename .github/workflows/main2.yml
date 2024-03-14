@@ -98,3 +98,11 @@ jobs:
         (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-pywebutil && tree ./result)
         echo "::endgroup"
 
+        echo "::group::build xo-reactor with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-reactor && tree ./result)
+        echo "::endgroup"
+
+        echo "::group::build xo-pyreactor with nix"
+        (cd repo/xo-nix2 && nix build -L --print-build-logs .#xo-pyreactor && tree ./result)
+        echo "::endgroup"
+
