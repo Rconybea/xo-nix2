@@ -18,6 +18,22 @@
         "type": "github"
       }
     },
+    "libgit2-path": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1710194268,
+        "narHash": "sha256-30PAPS3URq6vi139SMLvpe1zrXnGQT1pRpeQ8H6T/Ko=",
+        "owner": "libgit2",
+        "repo": "libgit2",
+        "rev": "bad5620e04cd5bc36b7e9a20b11a1cb493b12ad7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "libgit2",
+        "repo": "libgit2",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "narHash": "sha256-ci7ghtn0YKXw68Wkufou0DK3pwTmkfWeFOYkRsnLagc=",
@@ -32,6 +48,7 @@
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
+        "libgit2-path": "libgit2-path",
         "nixpkgs": "nixpkgs",
         "xo-callback-path": "xo-callback-path",
         "xo-cmake-path": "xo-cmake-path",
