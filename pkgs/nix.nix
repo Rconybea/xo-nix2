@@ -151,46 +151,56 @@ mkDerivation (finalAttrs: let
 in {
   inherit pname version;
 
-  src =
-    let
-      baseFiles = fileset.fileFilter (f: f.name != ".gitignore") ./.;
-    in
-      fileset.toSource {
-        root = ./.;
-        fileset = fileset.intersection baseFiles (fileset.unions ([
-          # For configure
-          ./.version
-          ./configure.ac
-          ./m4
-          # TODO: do we really need README.md? It doesn't seem used in the build.
-          ./README.md
-          # For make, regardless of what we are building
-          ./local.mk
-          ./Makefile
-          ./Makefile.config.in
-          ./mk
-          (fileset.fileFilter (f: lib.strings.hasPrefix "nix-profile" f.name) ./scripts)
-        ] ++ lib.optionals doBuild [
-          ./doc
-          ./misc
-          ./precompiled-headers.h
-          ./src
-          ./COPYING
-          ./scripts/local.mk
-        ] ++ lib.optionals buildUnitTests [
-          ./doc/manual
-        ] ++ lib.optionals enableInternalAPIDocs [
-          ./doc/internal-api
-          # Source might not be compiled, but still must be available
-          # for Doxygen to gather comments.
-          ./src
-          ./tests/unit
-        ] ++ lib.optionals buildUnitTests [
-          ./tests/unit
-        ] ++ lib.optionals doInstallCheck [
-          ./tests/functional
-        ]));
-      };
+  # below expression for src:
+  # 1. assumes source code in current directory
+  # 2. excludes files that don't affect build result
+  #
+  # Instead we want to do fetchgit,  and we don't care if build too often
+  # note that src will be overridden from parent flake.nix
+  src = (fetchGit {
+    url = "https://github.com/Nixos/nix";
+  });
+
+#  src =
+#    let
+#      baseFiles = fileset.fileFilter (f: f.name != ".gitignore") ./.;
+#    in
+#      fileset.toSource {
+#        root = ./.;
+#        fileset = fileset.intersection baseFiles (fileset.unions ([
+#          # For configure
+#          ./.version
+#          ./configure.ac
+#          ./m4
+#          # TODO: do we really need README.md? It doesn't seem used in the build.
+#          ./README.md
+#          # For make, regardless of what we are building
+#          ./local.mk
+#          ./Makefile
+#          ./Makefile.config.in
+#          ./mk
+#          (fileset.fileFilter (f: lib.strings.hasPrefix "nix-profile" f.name) ./scripts)
+#        ] ++ lib.optionals doBuild [
+#          ./doc
+#          ./misc
+#          ./precompiled-headers.h
+#          ./src
+#          ./COPYING
+#          ./scripts/local.mk
+#        ] ++ lib.optionals buildUnitTests [
+#          ./doc/manual
+#        ] ++ lib.optionals enableInternalAPIDocs [
+#          ./doc/internal-api
+#          # Source might not be compiled, but still must be available
+#          # for Doxygen to gather comments.
+#          ./src
+#          ./tests/unit
+#        ] ++ lib.optionals buildUnitTests [
+#          ./tests/unit
+#        ] ++ lib.optionals doInstallCheck [
+#          ./tests/functional
+#        ]));
+#      };
 
   VERSION_SUFFIX = versionSuffix;
 

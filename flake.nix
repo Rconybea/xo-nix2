@@ -44,10 +44,6 @@
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
-  inputs.libgit2-path = { url = "github:libgit2/libgit2"; flake = false; };
-
-  inputs.nix-nix-path = { url = "github:Nixos/nix"; flake = false; };
-
   # To add a new package,  visit placeholder-A .. placeholder-E
 
   inputs.xo-cmake-path          = { type = "github"; owner = "Rconybea"; repo = "xo-cmake";          flake = false; };
@@ -82,8 +78,6 @@
   = { self,
       nixpkgs,
       flake-utils,
-      libgit2-path,
-      nix-nix-path,
       xo-cmake-path,
       xo-indentlog-path,
       xo-refcnt-path,
@@ -114,9 +108,6 @@
     } :
       # out :: system -> {packages, devShells}
       let
-        inherit (nixpkgs) lib;
-        inherit (lib) fileset;
-
         out
           = system :
             let
@@ -171,11 +162,6 @@
 
                 packages.xo-userenv = appliedOverlay.xo-userenv;
 
-                # so we can build independently ($ nix build -L --print-build-logs .#libgit2-nix)
-                packages.libgit2-nix = appliedOverlay.libgit2-nix;
-                packages.boehmgc-nix = appliedOverlay.boehmgc-nix;
-                packages.nix-nix = appliedOverlay.nix-nix;
-
                 devShells = appliedOverlay.devShells;
               };
       in
@@ -204,72 +190,6 @@
                 #breathe = python3Packages.breathe;
                 #sphinx = python3Packages.sphinx;
                 #sphinx-rtd-theme = python3Packages.sphinx-rtd-theme;
-
-                # nix dependency #1
-                default-busybox-sandbox-shell = final.busybox.override {
-                  useMusl = true;
-                  enableStatic = true;
-                  enableMinimal = true;
-                  extraConfig = ''
-                    CONFIG_FEATURE_FANCY_ECHO y
-                    CONFIG_FEATURE_SH_MATH y
-                    CONFIG_FEATURE_SH_MATH_64 y
-
-                    CONFIG_ASH y
-                    CONFIG_ASH_OPTIMIZE_FOR_SIZE y
-
-                    CONFIG_ASH_ALIAS y
-                    CONFIG_ASH_BASH_COMPAT y
-                    CONFIG_ASH_CMDCMD y
-                    CONFIG_ASH_ECHO y
-                    CONFIG_ASH_GETOPTS y
-                    CONFIG_ASH_INTERNAL_GLOB y
-                    CONFIG_ASH_JOB_CONTROL y
-                    CONFIG_ASH_PRINTF y
-                    CONFIG_ASH_TEST y
-                  '';
-                };
-
-                # nix dependency #2
-                # TODO: move this into ./pkgs/libgit2-nix.nix
-                libgit2-nix = prev.libgit2.overrideAttrs (attrs: {
-                  src = libgit2-path;
-                  version = libgit2-path.lastModifiedDate;
-                  cmakeFlags = attrs.cmakeFlags or [] ++ [ "-DUSE_SSH=exec" ];
-                });
-                    
-                # nix dependency #3
-                # TODO: move this into ./pkgs/boehmgc-nix-.nix
-                boehmgc-nix =
-                  (final.boehmgc.override { enableLargeConfig = true; }).overrideAttrs
-                    (old: { patches = (old.patches or [])
-                                      ++ [
-                                        ./nix-patches/boehmgc-coroutine-sp-fallback.diff
-                                        ./nix-patches/boehmgc-traceable_allocator-public.diff
-                                      ];
-                          });
-
-                # adapted from nix repo toplevel flake.nix.
-                # (focusing on call callPacakge on package.nix)
-                nix-nix = 
-                  let
-                    officialRelease = false;
-                    versionSuffix = "xospecial";
-                    
-                  in (prev.callPackage ./pkgs/nix.nix  # was ./package.nix in ~/proj/nix
-                    {
-                      officialRelease = officialRelease;
-                      fileset = fileset;
-                      stdenv = stdenv;
-                      versionSuffix = versionSuffix;
-
-                      boehmgc = final.boehmgc-nix;
-                      libgit2 = final.libgit2-nix;
-                      busybox-sandbox-shell = final.busybox-sandbox-shell or final.default-busybox-sandbox-shell;
-                    } // {
-                      #perl-bindings = final.nix-perl-bindings;
-                    }).overrideAttrs
-                    (old: { src = nix-nix-path; });
 
                 #extras1 = { boost = boost; };
                 #extras2 = { boost = boost; python3Packages = python3Packages; pybind11 = pybind11; };
@@ -511,10 +431,6 @@
                   # placeholder-E
 
                   xo-userenv = xo-userenv;
-
-                  libgit2-nix = libgit2-nix;
-                  boehmgc-nix = boehmgc-nix;
-                  nix-nix = nix-nix;
 
                   devShells = {
                     default = prev.mkShell.override
