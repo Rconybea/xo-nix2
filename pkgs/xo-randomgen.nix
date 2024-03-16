@@ -21,7 +21,7 @@
 
 stdenv.mkDerivation (finalattrs:
   {
-    name = "xo-indentlog";
+    name = "xo-randomgen";
 
     src = (fetchGit {
       url = "https://github.com/rconybea/randomgen";
