@@ -47,6 +47,7 @@
         "xo-pyprocess-path": "xo-pyprocess-path",
         "xo-pyreactor-path": "xo-pyreactor-path",
         "xo-pyreflect-path": "xo-pyreflect-path",
+        "xo-pysimulator-path": "xo-pysimulator-path",
         "xo-pyutil-path": "xo-pyutil-path",
         "xo-pywebsock-path": "xo-pywebsock-path",
         "xo-pywebutil-path": "xo-pywebutil-path",
@@ -297,6 +298,22 @@
       "original": {
         "owner": "Rconybea",
         "repo": "xo-pyreflect",
+        "type": "github"
+      }
+    },
+    "xo-pysimulator-path": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1710552860,
+        "narHash": "sha256-DcZbWEcWBa7AKqA8QkO25szuahOPB0dV+6SkK1mMDmY=",
+        "owner": "Rconybea",
+        "repo": "xo-pysimulator",
+        "rev": "66abd390bd81607e06298f9581e2898cc6f5e4f2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rconybea",
+        "repo": "xo-pysimulator",
         "type": "github"
       }
     },

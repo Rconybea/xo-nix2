@@ -63,6 +63,7 @@
   inputs.xo-reactor-path        = { type = "github"; owner = "Rconybea"; repo = "xo-reactor";        flake = false; };
   inputs.xo-pyreactor-path      = { type = "github"; owner = "Rconybea"; repo = "xo-pyreactor";      flake = false; };
   inputs.xo-simulator-path      = { type = "github"; owner = "Rconybea"; repo = "xo-simulator";      flake = false; };
+  inputs.xo-pysimulator-path    = { type = "github"; owner = "Rconybea"; repo = "xo-pysimulator";    flake = false; };
   inputs.xo-distribution-path   = { type = "github"; owner = "Rconybea"; repo = "xo-distribution";   flake = false; };
   inputs.xo-pydistribution-path = { type = "github"; owner = "Rconybea"; repo = "xo-pydistribution"; flake = false; };
   inputs.xo-process-path        = { type = "github"; owner = "Rconybea"; repo = "xo-process";        flake = false; };
@@ -95,6 +96,7 @@
       xo-reactor-path,
       xo-pyreactor-path,
       xo-simulator-path,
+      xo-pysimulator-path,
       xo-distribution-path,
       xo-pydistribution-path,
       xo-process-path,
@@ -149,6 +151,7 @@
                 packages.xo-reactor = appliedOverlay.xo-reactor;
                 packages.xo-pyreactor = appliedOverlay.xo-pyreactor;
                 packages.xo-simulator = appliedOverlay.xo-simulator;
+                packages.xo-pysimulator = appliedOverlay.xo-pysimulator;
                 packages.xo-distribution = appliedOverlay.xo-distribution;
                 packages.xo-pydistribution = appliedOverlay.xo-pydistribution;
                 packages.xo-process = appliedOverlay.xo-process;
@@ -297,6 +300,14 @@
                                                             }).overrideAttrs
                     (old: { src = xo-simulator-path; });
 
+                xo-pysimulator =
+                  (prev.callPackage ./pkgs/xo-pysimulator.nix { xo-cmake = xo-cmake;
+                                                                xo-simulator = xo-simulator;
+                                                                xo-pyutil = xo-pyutil;
+                                                                xo-pyreactor = xo-pyreactor;
+                                                            }).overrideAttrs
+                    (old: { src = xo-pysimulator-path; });
+
                 xo-distribution =
                   (prev.callPackage ./pkgs/xo-distribution.nix { xo-cmake = xo-cmake;
                                                                  xo-refcnt = xo-refcnt;
@@ -383,6 +394,7 @@
                                                             xo-reactor = xo-reactor;
                                                             xo-pyreactor = xo-pyreactor;
                                                             xo-simulator = xo-simulator;
+                                                            xo-pysimulator = xo-pysimulator;
                                                             xo-distribution = xo-distribution;
                                                             xo-pydistribution = xo-pydistribution;
                                                             xo-process = xo-process;
@@ -419,6 +431,7 @@
                   xo-reactor = xo-reactor;
                   xo-pyreactor = xo-pyreactor;
                   xo-simulator = xo-simulator;
+                  xo-pysimulator = xo-pysimulator;
                   xo-distribution = xo-distribution;
                   xo-pydistribution = xo-pydistribution;
                   xo-process = xo-process;
@@ -475,6 +488,7 @@
                             prev.libwebsockets
                             prev.jsoncpp
                             prev.eigen
+                            prev.catch2
                             prev.pkg-config
                             prev.zlib
                           ];
