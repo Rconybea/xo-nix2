@@ -115,8 +115,6 @@
 
             in
               {
-                #xo-cmake-dir = "${self.packages.${system}.xo-cmake}/share/cmake";
-
                 # reminder:
                 # 'packages' comprises the output of this flake;
                 # each defn invokes a build
@@ -418,7 +416,9 @@
                             prev.git
                             prev.openssh
                             prev.cmake
-                            prev.gdb
+                          ]
+                        #++ (if system == "aarch64-darwin" then [ prev.gdb ] else [ ])
+                        ++ [
                             prev.which
                             prev.man
                             prev.man-pages
@@ -437,5 +437,4 @@
                   };
                 });
         };
-
 }
