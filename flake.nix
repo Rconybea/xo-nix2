@@ -29,12 +29,21 @@
   #    below
   #inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/9a333eaa80901efe01df07eade2c16d183761fa3.tar.gz";
 
-  # as sbove but instead of {release-23.05} use {release-23.11}
+  # as sbove but use {release-23.11} instead of {release-23.05}
   #   gcc -> 12.3.0
+  #   clang -> 17
   #   python -> 3.11.6
   #
-  inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/217b3e910660fbf603b0995a6d2c3992aef4cc37.tar.gz"; # asof 10mar2024
+  #inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/ec877443d62ed5268c741656657d1319554a55f4.tar.gz"; # asof 12apr2024
+  #inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/217b3e910660fbf603b0995a6d2c3992aef4cc37.tar.gz"; # asof 10mar2024
   #inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/4dd376f7943c64b522224a548d9cab5627b4d9d6.tar.gz";
+
+  # as above but use {master} instead of {release-23.11}
+  #   gcc -> 13.2.0
+  #   clang -> 18
+  #   python -> 3.11.8
+  #
+  inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/cfd6b5fc90b15709b780a5a1619695a88505a176.tar.gz"; # asof 12apr2024
 
   # inputs.nixpkgs.url
   #   = "https://github.com/NixOS/nixpkgs/archive/fac3684647cc9d6dfb2a39f3f4b7cf5fc89c96b6.tar.gz"; # asof 8feb2024
@@ -184,7 +193,7 @@
 
                 stdenv = prev.stdenv;
 
-                #boost = prev.boost182;
+                boost = prev.boost182;
                 python = prev.python311Full;
                 pythonPackages = prev.python311Packages;
                 #doxygen = prev.doxygen;
@@ -453,13 +462,30 @@
                       { packages
                         = [ python
                             pybind11
+
+                            # datascience..
+                            pythonPackages.jupyterlab
+				                    # sklearn-deap broken in nixos.unstable asof 12apr2024
+                            #pythonPackages.sklearn-deap
+                            pythonPackages.pandas
+                            pythonPackages.numpy
+                            pythonPackages.matplotlib
+
                             pythonPackages.coverage
                             pythonPackages.sphinx
                             pythonPackages.sphinx-rtd-theme
                             pythonPackages.breathe
                             # pythonPackages.pyarrow
+                            boost   # really for filemerge
 
-                            prev.llvmPackages_16.clang-unwrapped
+                            prev.llvmPackages_18.clang-unwrapped
+                            #prev.llvmPackages_17.clang-unwrapped
+                            #prev.llvmPackages_16.clang-unwrapped
+                            prev.ccache
+
+                            #prev.anki
+                            #prev.mesa
+                            #prev.egl-wayland
 
                             prev.emacs29
                             prev.notmuch
@@ -491,6 +517,7 @@
                             prev.catch2
                             prev.pkg-config
                             prev.zlib
+                            prev.unzip
                           ];
                       };
                   };
