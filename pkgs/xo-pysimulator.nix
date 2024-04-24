@@ -3,7 +3,7 @@
   stdenv, cmake, catch2, # ... other deps here
 
   # xo dependencies
-  xo-cmake, xo-indentlog
+  xo-cmake, xo-pyutil, xo-simulator, xo-pyreactor,
 
   # args
 
@@ -21,10 +21,10 @@
 
 stdenv.mkDerivation (finalattrs:
   {
-    name = "xo-randomgen";
+    name = "xo-pysimulator";
 
     src = (fetchGit {
-      url = "https://github.com/rconybea/randomgen";
+      url = "https://github.com/rconybea/xo-pysimulator";
       version = "1.0";
       #ref = "ex1";
       #rev = "c0472c9d7e4d2c53bfb977d3182380832fe96645";
@@ -32,6 +32,6 @@ stdenv.mkDerivation (finalattrs:
 
     cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo-cmake}/share/cmake"];
     doCheck = true;
-    nativeBuildInputs = [ cmake catch2 ];
-    propagatedBuildInputs = [ xo-indentlog ];
+    nativeBuildInputs = [ cmake catch2 xo-pyutil ];
+    propagatedBuildInputs = [ xo-simulator xo-pyreactor ];
   })

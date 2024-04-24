@@ -78,6 +78,16 @@ Inputs:
 ...
 ```
 
+# Pull changes made elsewhere
+```
+$ nix flake update
+$ nix build .#xo-foo
+```
+
+# Github Workflow
+
+NOTE: this won't be triggered on changes to individual repos.   Would show up as change to `flake.lock`,  but we don't commit that
+
 # Links
 
 - https://github.com/vlktomas/nix-examples         Tomas Vlk nix examples

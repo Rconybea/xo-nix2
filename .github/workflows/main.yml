@@ -6,6 +6,14 @@
 #    has read permission on public resources + read/write permission on this repo
 #
 # 2. container built from [[https:github.com:rconybea/docker-xo-builder]]
+#    Includes dependencies:
+#    - compiler toolchain:  gcc, binutils, bash, etc
+#    - git
+#    - cmake
+#    - catch2
+#    - pybind11 + python
+#    - libwebsockets
+#    - jsoncpp
 #
 # 3. runner filesystem as build completes:
 #
@@ -56,7 +64,7 @@ env:
 
 jobs:
   build_job:
-    name: compile XO projects, using prepared docker container
+    name: XO layercake build on docker-xo-builder
     runs-on: ubuntu-latest
     container:
       # custom docker image.  see github.com:rconybea/docker-xo-builder for definition
@@ -104,26 +112,27 @@ jobs:
       - name: xo-indentlog
         run: |
           echo "::group::clone repo"
-          XO_SRC=repo/xo-indentlog
+          XO_NAME=xo-indentlog
+          XO_SRC=repo/xo-${XO_NAME}
           mkdir -p ${XO_SRC}
           GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/indentlog.git ${XO_SRC}
           echo "::endgroup"
 
-          echo "::group::configure xo-indentlog"
+          echo "::group::configure [${XO_NAME}]"
           BUILDDIR=${{github.workspace}}/build_xo-indentlog
           INSTALLDIR=${{github.workspace}}/local
           cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
           echo "::endgroup"
 
-          echo "::group::compile xo-indentlog"
+          echo "::group::compile [${XO_NAME}]"
           cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
           echo "::endgroup"
 
-          echo "::group::test xo-indentlog"
-          (cd ${{github.workspace}}//build_xo-indentlog && ctest)
+          echo "::group::test [${XO_NAME}]"
+          (cd ${BUILDDIR} && ctest)
           echo "::endgroup"
 
-          echo "::group::install xo-indentlog"
+          echo "::group::install [${XO_NAME}]"
           cmake --install ${BUILDDIR}
           echo "::endgroup"
 
@@ -138,26 +147,27 @@ jobs:
       - name: xo-subsys
         run: |
           echo "::group::clone repo"
-          XO_SRC=repo/xo-subsys
+          XO_NAME=xo-subsys
+          XO_SRC=repo/${XO_NAME}
           mkdir -p ${XO_SRC}
           GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/subsys.git ${XO_SRC}
           echo "::endgroup"
 
-          echo "::group::configure xo-subsys"
-          BUILDDIR=${{github.workspace}}/build_xo-subsys
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
           INSTALLDIR=${{github.workspace}}/local
           cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
           echo "::endgroup"
 
-          echo "::group::compile xo-subsys"
+          echo "::group::compile [${XO_NAME}]"
           cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
           echo "::endgroup"
 
-          #echo "::group::test xo-subsys"
-          #(cd ${{github.workspace}}//build_xo-subsys && ctest)
+          #echo "::group::test [${XO_NAME}]"
+          #(cd ${BUILDDIR} && ctest)
           #echo "::endgroup"
 
-          echo "::group::install xo-subsys"
+          echo "::group::install [${XO_NAME}]"
           cmake --install ${BUILDDIR}
           echo "::endgroup"
 
@@ -166,29 +176,823 @@ jobs:
           echo "::endgroup"
 
       # ----------------------------------------------------------------
-      # TODO:
-      #
       # xo-refcnt
+      # ----------------------------------------------------------------
+
+      - name: xo-refcnt
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-refcnt
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/refcnt.git ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          echo "::group::test [${XO_NAME}]"
+          (cd ${BUILDDIR} && ctest)
+          echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+
+      # ----------------------------------------------------------------
       # xo-randomgen
+      # ----------------------------------------------------------------
+
+      - name: xo-randomgen
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-randomgen
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/randomgen.git ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          #echo "::group::test ${XO_NAME}
+          #(cd ${BUILDDIR} && ctest)
+          #echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+
+      # ----------------------------------------------------------------
       # xo-ordinaltree
+      # ----------------------------------------------------------------
+
+      - name: xo-ordinaltree
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-ordinaltree
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME}.git ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          echo "::group::test [${XO_NAME}]"
+          (cd ${BUILDDIR} && ctest)
+          echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+
+      # ----------------------------------------------------------------
       # xo-pyutil
+      # ----------------------------------------------------------------
+
+      - name: xo-pyutil
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-pyutil
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME}.git ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          #echo "::group::test ${XO_NAME}
+          #(cd ${BUILDDIR} && ctest)
+          #echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+
+      # ----------------------------------------------------------------
       # xo-reflect
+      # ----------------------------------------------------------------
+
+      - name: xo-reflect
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-reflect
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/reflect.git ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          echo "::group::test [${XO_NAME}]"
+          (cd ${BUILDDIR} && ctest)
+          echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+
+      # ----------------------------------------------------------------
       # xo-pyreflect
+      # ----------------------------------------------------------------
+
+      - name: xo-pyreflect
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-pyreflect
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          echo "::group::test [${XO_NAME}]"
+          (cd ${BUILDDIR} && ctest)
+          echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+
+      # ----------------------------------------------------------------
       # xo-printjson
+      # ----------------------------------------------------------------
+
+      - name: xo-printjson
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-printjson
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          echo "::group::test [${XO_NAME}]"
+          (cd ${BUILDDIR} && ctest)
+          echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+
+      # ----------------------------------------------------------------
       # xo-pyprintjson
+      # ----------------------------------------------------------------
+
+      - name: xo-pyprintjson
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-pyprintjson
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          #echo "::group::test [${XO_NAME}]"
+          #(cd ${BUILDDIR} && ctest)
+          #echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+
+      # ----------------------------------------------------------------
       # xo-callback
+      # ----------------------------------------------------------------
+
+      - name: xo-callback
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-callback
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          #echo "::group::test [${XO_NAME}]"
+          #(cd ${BUILDDIR} && ctest)
+          #echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+
+      # ----------------------------------------------------------------
       # xo-webutil
+      # ----------------------------------------------------------------
+
+      - name: xo-webutil
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-webutil
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          #echo "::group::test [${XO_NAME}]"
+          #(cd ${BUILDDIR} && ctest)
+          #echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+
+      # ----------------------------------------------------------------
       # xo-pywebutil
+      # ----------------------------------------------------------------
+
+      - name: xo-pywebutil
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-pywebutil
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          #echo "::group::test [${XO_NAME}]"
+          #(cd ${BUILDDIR} && ctest)
+          #echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+
+      # ----------------------------------------------------------------
       # xo-reactor
+      # ----------------------------------------------------------------
+
+      - name: xo-reactor
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-reactor
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          #echo "::group::test [${XO_NAME}]"
+          #(cd ${BUILDDIR} && ctest)
+          #echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+
+      # ----------------------------------------------------------------
       # xo-pyreactor
+      # ----------------------------------------------------------------
+
+      - name: xo-pyreactor
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-pyreactor
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          #echo "::group::test [${XO_NAME}]"
+          #(cd ${BUILDDIR} && ctest)
+          #echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+
+      # ----------------------------------------------------------------
       # xo-simulator
+      # ----------------------------------------------------------------
+
+      - name: xo-simulator
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-simulator
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          #echo "::group::test [${XO_NAME}]"
+          #(cd ${BUILDDIR} && ctest)
+          #echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+
+      # ----------------------------------------------------------------
       # xo-distribution
+      # ----------------------------------------------------------------
+
+      - name: xo-distribution
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-distribution
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          #echo "::group::test [${XO_NAME}]"
+          #(cd ${BUILDDIR} && ctest)
+          #echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+
+      # ----------------------------------------------------------------
       # xo-pydistribution
+      # ----------------------------------------------------------------
+
+      - name: xo-pydistribution
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-pydistribution
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          #echo "::group::test [${XO_NAME}]"
+          #(cd ${BUILDDIR} && ctest)
+          #echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+
+      # ----------------------------------------------------------------
       # xo-process
+      # ----------------------------------------------------------------
+
+      - name: xo-process
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-process
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          echo "::group::test [${XO_NAME}]"
+          (cd ${BUILDDIR} && ctest)
+          echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+      # ----------------------------------------------------------------
       # xo-pyprocess
+      # ----------------------------------------------------------------
+
+      - name: xo-pyprocess
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-pyprocess
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          #echo "::group::test [${XO_NAME}]"
+          #(cd ${BUILDDIR} && ctest)
+          #echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+      # ----------------------------------------------------------------
       # xo-statistics
+      # ----------------------------------------------------------------
+
+      - name: xo-statistics
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-statistics
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          #echo "::group::test [${XO_NAME}]"
+          #(cd ${BUILDDIR} && ctest)
+          #echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+      # ----------------------------------------------------------------
       # xo-kalmanfilter
+      # ----------------------------------------------------------------
+
+      - name: xo-kalmanfilter
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-kalmanfilter
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          # revert for now -- diff fails
+          #echo "::group::test [${XO_NAME}]"
+          #(cd ${BUILDDIR} && (ctest | ctest --rerunr-failed --output-on-failure))
+          #echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+      # ----------------------------------------------------------------
       # xo-pykalmanfilter
+      # ----------------------------------------------------------------
+
+      - name: xo-pykalmanfilter
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-pykalmanfilter
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          #echo "::group::test [${XO_NAME}]"
+          #(cd ${BUILDDIR} && ctest)
+          #echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+      # ----------------------------------------------------------------
       # xo-websock
+      # ----------------------------------------------------------------
+
+      - name: xo-websock
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-websock
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          #echo "::group::test [${XO_NAME}]"
+          #(cd ${BUILDDIR} && ctest)
+          #echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"
+
+      # ----------------------------------------------------------------
       # xo-pywebsock
       # ----------------------------------------------------------------
+
+      - name: xo-pywebsock
+        run: |
+          echo "::group::clone repo"
+          XO_NAME=xo-pywebsock
+          XO_SRC=repo/${XO_NAME}
+          mkdir -p ${XO_SRC}
+          GIT_SSL_NO_VERIFY=true git clone https://${{env.GIT_USER}}:${{env.GIT_TOKEN}}@github.com/rconybea/${XO_NAME} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::configure [${XO_NAME}]"
+          BUILDDIR=${{github.workspace}}/build_${XO_NAME}
+          INSTALLDIR=${{github.workspace}}/local
+          cmake -B ${BUILDDIR} "-DCMAKE_MODULE_PATH=${INSTALLDIR}/share/cmake;/lib/cmake" -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} ${XO_SRC}
+          echo "::endgroup"
+
+          echo "::group::compile [${XO_NAME}]"
+          cmake --build ${BUILDDIR} --config ${{env.BUILD_TYPE}} --verbose
+          echo "::endgroup"
+
+          #echo "::group::test [${XO_NAME}]"
+          #(cd ${BUILDDIR} && ctest)
+          #echo "::endgroup"
+
+          echo "::group::install [${XO_NAME}]"
+          cmake --install ${BUILDDIR}
+          echo "::endgroup"
+
+          echo "::group::result (print install-tree)"
+          tree ${INSTALLDIR}
+          echo "::endgroup"

@@ -29,12 +29,21 @@
   #    below
   #inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/9a333eaa80901efe01df07eade2c16d183761fa3.tar.gz";
 
-  # as sbove but instead of {release-23.05} use {release-23.11}
+  # as sbove but use {release-23.11} instead of {release-23.05}
   #   gcc -> 12.3.0
+  #   clang -> 17
   #   python -> 3.11.6
   #
-  inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/217b3e910660fbf603b0995a6d2c3992aef4cc37.tar.gz"; # asof 10mar2024
+  #inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/ec877443d62ed5268c741656657d1319554a55f4.tar.gz"; # asof 12apr2024
+  #inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/217b3e910660fbf603b0995a6d2c3992aef4cc37.tar.gz"; # asof 10mar2024
   #inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/4dd376f7943c64b522224a548d9cab5627b4d9d6.tar.gz";
+
+  # as above but use {master} instead of {release-23.11}
+  #   gcc -> 13.2.0
+  #   clang -> 18
+  #   python -> 3.11.8
+  #
+  inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/cfd6b5fc90b15709b780a5a1619695a88505a176.tar.gz"; # asof 12apr2024
 
   # inputs.nixpkgs.url
   #   = "https://github.com/NixOS/nixpkgs/archive/fac3684647cc9d6dfb2a39f3f4b7cf5fc89c96b6.tar.gz"; # asof 8feb2024
@@ -63,6 +72,7 @@
   inputs.xo-reactor-path        = { type = "github"; owner = "Rconybea"; repo = "xo-reactor";        flake = false; };
   inputs.xo-pyreactor-path      = { type = "github"; owner = "Rconybea"; repo = "xo-pyreactor";      flake = false; };
   inputs.xo-simulator-path      = { type = "github"; owner = "Rconybea"; repo = "xo-simulator";      flake = false; };
+  inputs.xo-pysimulator-path    = { type = "github"; owner = "Rconybea"; repo = "xo-pysimulator";    flake = false; };
   inputs.xo-distribution-path   = { type = "github"; owner = "Rconybea"; repo = "xo-distribution";   flake = false; };
   inputs.xo-pydistribution-path = { type = "github"; owner = "Rconybea"; repo = "xo-pydistribution"; flake = false; };
   inputs.xo-process-path        = { type = "github"; owner = "Rconybea"; repo = "xo-process";        flake = false; };
@@ -95,6 +105,7 @@
       xo-reactor-path,
       xo-pyreactor-path,
       xo-simulator-path,
+      xo-pysimulator-path,
       xo-distribution-path,
       xo-pydistribution-path,
       xo-process-path,
@@ -107,10 +118,17 @@
       # placeholder-B
     } :
       # out :: system -> {packages, devShells}
-      let out
+      let
+        out
           = system :
             let
               pkgs = nixpkgs.legacyPackages.${system};
+
+              # could try using
+              #   appliedOverlay = (pkgs.extend self.overlays.default)
+              # but it doesn't seem to work the way I expect,
+              # For example, wants to pickup 2.7.11 python for xo-pyutil !
+              #
               appliedOverlay = self.overlays.default pkgs pkgs;
 
             in
@@ -140,6 +158,7 @@
                 packages.xo-reactor = appliedOverlay.xo-reactor;
                 packages.xo-pyreactor = appliedOverlay.xo-pyreactor;
                 packages.xo-simulator = appliedOverlay.xo-simulator;
+                packages.xo-pysimulator = appliedOverlay.xo-pysimulator;
                 packages.xo-distribution = appliedOverlay.xo-distribution;
                 packages.xo-pydistribution = appliedOverlay.xo-pydistribution;
                 packages.xo-process = appliedOverlay.xo-process;
@@ -150,6 +169,8 @@
                 packages.xo-websock = appliedOverlay.xo-websock;
                 packages.xo-pywebsock = appliedOverlay.xo-pywebsock;
                 # placeholder-C
+
+                packages.xo-userenv = appliedOverlay.xo-userenv;
 
                 devShells = appliedOverlay.devShells;
               };
@@ -168,7 +189,9 @@
                 #  $ nix-env -qaP | grep \.boost            # show known boost versions
                 #  $ nix-env -qaP | grep \.python.*Packages # show known python versions
 
-                #boost = prev.boost182;
+                stdenv = prev.stdenv;
+
+                boost = prev.boost182;
                 python = prev.python311Full;
                 pythonPackages = prev.python311Packages;
                 #doxygen = prev.doxygen;
@@ -284,6 +307,14 @@
                                                             }).overrideAttrs
                     (old: { src = xo-simulator-path; });
 
+                xo-pysimulator =
+                  (prev.callPackage ./pkgs/xo-pysimulator.nix { xo-cmake = xo-cmake;
+                                                                xo-simulator = xo-simulator;
+                                                                xo-pyutil = xo-pyutil;
+                                                                xo-pyreactor = xo-pyreactor;
+                                                            }).overrideAttrs
+                    (old: { src = xo-pysimulator-path; });
+
                 xo-distribution =
                   (prev.callPackage ./pkgs/xo-distribution.nix { xo-cmake = xo-cmake;
                                                                  xo-refcnt = xo-refcnt;
@@ -338,9 +369,6 @@
                 xo-websock =
                   (prev.callPackage ./pkgs/xo-websock.nix { xo-cmake = xo-cmake;
                                                             xo-reactor = xo-reactor;
-                                                            #xo-pyutil = xo-pyutil;
-                                                            #xo-kalmanfilter = xo-kalmanfilter;
-                                                            #xo-pyreactor = xo-pyreactor;
                                                                }).overrideAttrs
                     (old: { src = xo-websock-path; });
 
@@ -349,15 +377,49 @@
                                                               xo-websock = xo-websock;
                                                               xo-pyutil = xo-pyutil;
                                                               xo-pywebutil = xo-pywebutil;
-                                                              #xo-kalmanfilter = xo-kalmanfilter;
-                                                              #xo-pyreactor = xo-pyreactor;
                                                             }).overrideAttrs
                     (old: { src = xo-pywebsock-path; });
 
                 # placeholder-D
 
+                # user environment with all xo libraries present
+                xo-userenv =
+                  (prev.callPackage ./pkgs/xo-userenv.nix { xo-cmake = xo-cmake;
+                                                            xo-indentlog = xo-indentlog;
+                                                            xo-callback = xo-callback;
+                                                            xo-subsys = xo-subsys;
+                                                            xo-refcnt = xo-refcnt;
+                                                            xo-randomgen = xo-randomgen;
+                                                            xo-ordinaltree = xo-ordinaltree;
+                                                            xo-pyutil = xo-pyutil;
+                                                            xo-reflect = xo-reflect;
+                                                            xo-pyreflect = xo-pyreflect;
+                                                            xo-printjson = xo-printjson;
+                                                            xo-pyprintjson = xo-pyprintjson;
+                                                            xo-webutil = xo-webutil;
+                                                            xo-pywebutil = xo-pywebutil;
+                                                            xo-reactor = xo-reactor;
+                                                            xo-pyreactor = xo-pyreactor;
+                                                            xo-simulator = xo-simulator;
+                                                            xo-pysimulator = xo-pysimulator;
+                                                            xo-distribution = xo-distribution;
+                                                            xo-pydistribution = xo-pydistribution;
+                                                            xo-process = xo-process;
+                                                            xo-pyprocess = xo-pyprocess;
+                                                            xo-statistics = xo-statistics;
+                                                            xo-kalmanfilter = xo-kalmanfilter;
+                                                            xo-pykalmanfilter = xo-pykalmanfilter;
+                                                            xo-websock = xo-websock;
+                                                            xo-pywebsock = xo-pywebsock;
+                                                          }).overrideAttrs(old: {});
+
+
               in
                 # attrs in this set provide derivations with all overlay changes applied.
+                #
+                # REMINDER: need expression like
+                #             packages.xo-foo = appliedOverlay.xo-foo;
+                #           above to export
                 {
                   xo-cmake = xo-cmake;
                   xo-indentlog = xo-indentlog;
@@ -376,6 +438,7 @@
                   xo-reactor = xo-reactor;
                   xo-pyreactor = xo-pyreactor;
                   xo-simulator = xo-simulator;
+                  xo-pysimulator = xo-pysimulator;
                   xo-distribution = xo-distribution;
                   xo-pydistribution = xo-pydistribution;
                   xo-process = xo-process;
@@ -387,6 +450,8 @@
                   xo-pywebsock = xo-pywebsock;
                   # placeholder-E
 
+                  xo-userenv = xo-userenv;
+
                   devShells = {
                     default = prev.mkShell.override
                       # but may need prev.clang16Stdenv instead of prev.stdenv here on macos
@@ -395,12 +460,30 @@
                       { packages
                         = [ python
                             pybind11
+
+                            # datascience..
+                            pythonPackages.jupyterlab
+				                    # sklearn-deap broken in nixos.unstable asof 12apr2024
+                            #pythonPackages.sklearn-deap
+                            pythonPackages.pandas
+                            pythonPackages.numpy
+                            pythonPackages.matplotlib
+
                             pythonPackages.coverage
                             pythonPackages.sphinx
                             pythonPackages.sphinx-rtd-theme
                             pythonPackages.breathe
+                            # pythonPackages.pyarrow
+                            boost   # really for filemerge
 
-                            prev.llvmPackages_16.clang-unwrapped
+                            prev.llvmPackages_18.clang-unwrapped
+                            #prev.llvmPackages_17.clang-unwrapped
+                            #prev.llvmPackages_16.clang-unwrapped
+                            prev.ccache
+
+                            #prev.anki
+                            #prev.mesa
+                            #prev.egl-wayland
 
                             prev.emacs29
                             prev.notmuch
@@ -427,11 +510,14 @@
                             prev.nix-tree
                             prev.lcov
 
+                            prev.arrow-cpp
                             prev.libwebsockets
                             prev.jsoncpp
                             prev.eigen
+                            prev.catch2
                             prev.pkg-config
                             prev.zlib
+                            prev.unzip
                           ];
                       };
                   };
