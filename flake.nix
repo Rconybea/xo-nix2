@@ -45,7 +45,8 @@
   #   clang -> 18
   #   python -> 3.11.8
   #
-  inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/cfd6b5fc90b15709b780a5a1619695a88505a176.tar.gz"; # asof 12apr2024
+  # not working on osx,  problem with man pages (of all things..)
+  #inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/cfd6b5fc90b15709b780a5a1619695a88505a176.tar.gz"; # asof 12apr2024
 
   # inputs.nixpkgs.url
   #   = "https://github.com/NixOS/nixpkgs/archive/fac3684647cc9d6dfb2a39f3f4b7cf5fc89c96b6.tar.gz"; # asof 8feb2024
