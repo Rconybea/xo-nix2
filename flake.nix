@@ -478,6 +478,9 @@
 
                             prev.llvmPackages_18.clang-unwrapped
                             #prev.llvmPackages_17.clang-unwrapped
+                            prev.llvmPackages_18.libllvm
+                            prev.libxml2
+                            prev.libffi
                             #prev.llvmPackages_16.clang-unwrapped
                             prev.ccache
 
