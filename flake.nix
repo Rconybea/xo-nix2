@@ -455,7 +455,8 @@
                   devShells = {
                     default = prev.mkShell.override
                       # but may need prev.clang16Stdenv instead of prev.stdenv here on macos
-                      { stdenv = prev.stdenv; }
+                      #{ stdenv = prev.stdenv; }
+                      { stdenv = prev.gccStdenv; }
 
                       { packages
                         = [ python
