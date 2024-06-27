@@ -34,9 +34,11 @@
   #   clang -> 17
   #   python -> 3.11.6
   #
-  #inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/ec877443d62ed5268c741656657d1319554a55f4.tar.gz"; # asof 12apr2024
-  #inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/217b3e910660fbf603b0995a6d2c3992aef4cc37.tar.gz"; # asof 10mar2024
-  #inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/4dd376f7943c64b522224a548d9cab5627b4d9d6.tar.gz";
+  inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/dd868b7bd4d1407d607da0d1d9c5eca89132e2f7.tar.gz"; # 24.05-darwin
+  #inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/76c9ac10af06352bf886d908585c593f5e53ba71.tar.gz"; # asof 24jun2024 no good on darwin
+  #inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/ec877443d62ed5268c741656657d1319554a55f4.tar.gz"; # asof 12apr2024 ## works on macos, llvm 16
+  ##inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/217b3e910660fbf603b0995a6d2c3992aef4cc37.tar.gz"; # asof 10mar2024
+  ##inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/4dd376f7943c64b522224a548d9cab5627b4d9d6.tar.gz";
 
   # as above but use {master} instead of {release-23.11}
   #   gcc -> 13.2.0
