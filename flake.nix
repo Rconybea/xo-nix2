@@ -482,6 +482,7 @@
 
                             #prev.llvmPackages_17.clang-unwrapped
                             prev.llvmPackages_18.libllvm
+                            prev.llvmPackages_18.bintools  # llc etc.
                             prev.libxml2
                             prev.libffi
                             #prev.llvmPackages_16.clang-unwrapped
