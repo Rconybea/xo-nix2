@@ -505,6 +505,8 @@
                             prev.git
                             prev.openssh
                             prev.cmake
+
+                            prev.nix # want nix-env -qaP etc. to report from pin in this flake
                           ]
                         #++ (if system == "aarch64-darwin" then [ prev.gdb ] else [ ])
                         ++ [
