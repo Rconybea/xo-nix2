@@ -480,7 +480,6 @@
                             # pythonPackages.pyarrow
                             boost   # really for filemerge
 
-                            prev.llvmPackages_18.clang-unwrapped
                             #prev.llvmPackages_17.clang-unwrapped
                             prev.llvmPackages_18.libllvm
                             prev.libxml2
