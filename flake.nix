@@ -34,7 +34,8 @@
   #   clang -> 17
   #   python -> 3.11.6
   #
-  inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/dd868b7bd4d1407d607da0d1d9c5eca89132e2f7.tar.gz"; # 24.05-darwin works on macos, clang17, llvm 18
+  inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/346cb5cf94f7188a6b9db53e1877305f644a06ce.tar.gz"; # asof 12sep2024
+  #inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/dd868b7bd4d1407d607da0d1d9c5eca89132e2f7.tar.gz"; # 24.05-darwin works on macos, clang17, llvm 18
   #inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/76c9ac10af06352bf886d908585c593f5e53ba71.tar.gz"; # asof 24jun2024 no good on darwin
   #inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/ec877443d62ed5268c741656657d1319554a55f4.tar.gz"; # asof 12apr2024 ## works on macos, llvm 16
   ##inputs.nixpkgs.url = "https://github.com/NixOS/nixpkgs/archive/217b3e910660fbf603b0995a6d2c3992aef4cc37.tar.gz"; # asof 10mar2024
@@ -64,6 +65,8 @@
   inputs.xo-subsys-path         = { type = "github"; owner = "Rconybea"; repo = "subsys";            flake = false; };
   inputs.xo-randomgen-path      = { type = "github"; owner = "Rconybea"; repo = "randomgen";         flake = false; };
   inputs.xo-ordinaltree-path    = { type = "github"; owner = "Rconybea"; repo = "xo-ordinaltree";    flake = false; };
+  inputs.xo-flatstring-path     = { type = "github"; owner = "Rconybea"; repo = "xo-flatstring";     flake = false; };
+  inputs.xo-reflectutil-path    = { type = "github"; owner = "Rconybea"; repo = "xo-reflectutil";    flake = false; };
   inputs.xo-pyutil-path         = { type = "github"; owner = "Rconybea"; repo = "xo-pyutil";         flake = false; };
   inputs.xo-reflect-path        = { type = "github"; owner = "Rconybea"; repo = "reflect";           flake = false; };
   inputs.xo-pyreflect-path      = { type = "github"; owner = "Rconybea"; repo = "xo-pyreflect";      flake = false; };
@@ -98,6 +101,8 @@
       xo-reflect-path,
       xo-randomgen-path,
       xo-ordinaltree-path,
+      xo-flatstring-path,
+      xo-reflectutil-path,
       xo-pyutil-path,
       xo-pyreflect-path,
       xo-printjson-path,
@@ -150,6 +155,8 @@
                 packages.xo-subsys = appliedOverlay.xo-subsys;
                 packages.xo-randomgen = appliedOverlay.xo-randomgen;
                 packages.xo-ordinaltree = appliedOverlay.xo-ordinaltree;
+                packages.xo-flatstring = appliedOverlay.xo-flatstring;
+                packages.xo-reflectutil = appliedOverlay.xo-reflectutil;
                 packages.xo-pyutil = appliedOverlay.xo-pyutil;
                 packages.xo-reflect = appliedOverlay.xo-reflect;
                 packages.xo-pyreflect = appliedOverlay.xo-pyreflect;
@@ -236,6 +243,15 @@
                                                                 xo-refcnt = xo-refcnt;
                                                                 xo-randomgen = xo-randomgen; }).overrideAttrs
                     (old: { src = xo-ordinaltree-path; });
+
+                xo-flatstring =
+                  (prev.callPackage ./pkgs/xo-flatstring.nix { xo-cmake = xo-cmake; }).overrideAttrs
+                    (old: { src = xo-flatstring-path; });
+
+                xo-reflectutil =
+                  (prev.callPackage ./pkgs/xo-reflectutil.nix { xo-cmake = xo-cmake;
+                                                                xo-flatstring = xo-flatstring; }).overrideAttrs
+                    (old: { src = xo-flatstring-path; });
 
                 xo-pyutil =
                   (prev.callPackage ./pkgs/xo-pyutil.nix { xo-cmake = xo-cmake;
@@ -430,6 +446,8 @@
                   xo-refcnt = xo-refcnt;
                   xo-randomgen = xo-randomgen;
                   xo-ordinaltree = xo-ordinaltree;
+                  xo-flatstring = xo-flatstring;
+                  xo-reflectutil = xo-reflectutil;
                   xo-pyutil = xo-pyutil;
                   xo-reflect = xo-reflect;
                   xo-pyreflect = xo-pyreflect;
@@ -459,8 +477,8 @@
                     default = prev.mkShell.override
                       # but may need prev.clang16Stdenv instead of prev.stdenv here on macos
                       #{ stdenv = prev.stdenv; }
-                      { stdenv = prev.clang17Stdenv; }
-                      #{ stdenv = prev.gccStdenv; }
+                      #{ stdenv = prev.clang17Stdenv; }
+                      { stdenv = prev.gccStdenv; }
 
                       { packages
                         = [ python
@@ -468,7 +486,7 @@
 
                             # datascience..
                             pythonPackages.jupyterlab
-				                    # sklearn-deap broken in nixos.unstable asof 12apr2024
+                            # sklearn-deap broken in nixos.unstable asof 12apr2024
                             #pythonPackages.sklearn-deap
                             pythonPackages.pandas
                             pythonPackages.numpy
@@ -496,7 +514,7 @@
                             prev.emacs29
                             prev.notmuch
                             prev.emacsPackages.notmuch
-                            prev.inconsolata-lgc
+                            prev.inconsolata-lgc   # but need to install with nix-env -i
 
                             prev.doxygen
                             prev.graphviz
