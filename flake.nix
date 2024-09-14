@@ -67,6 +67,7 @@
   inputs.xo-ordinaltree-path    = { type = "github"; owner = "Rconybea"; repo = "xo-ordinaltree";    flake = false; };
   inputs.xo-flatstring-path     = { type = "github"; owner = "Rconybea"; repo = "xo-flatstring";     flake = false; };
   inputs.xo-reflectutil-path    = { type = "github"; owner = "Rconybea"; repo = "xo-reflectutil";    flake = false; };
+  inputs.xo-ratio-path          = { type = "github"; owner = "Rconybea"; repo = "xo-ratio";          flake = false; };
   inputs.xo-pyutil-path         = { type = "github"; owner = "Rconybea"; repo = "xo-pyutil";         flake = false; };
   inputs.xo-reflect-path        = { type = "github"; owner = "Rconybea"; repo = "reflect";           flake = false; };
   inputs.xo-pyreflect-path      = { type = "github"; owner = "Rconybea"; repo = "xo-pyreflect";      flake = false; };
@@ -103,6 +104,7 @@
       xo-ordinaltree-path,
       xo-flatstring-path,
       xo-reflectutil-path,
+      xo-ratio-path,
       xo-pyutil-path,
       xo-pyreflect-path,
       xo-printjson-path,
@@ -157,6 +159,7 @@
                 packages.xo-ordinaltree = appliedOverlay.xo-ordinaltree;
                 packages.xo-flatstring = appliedOverlay.xo-flatstring;
                 packages.xo-reflectutil = appliedOverlay.xo-reflectutil;
+                packages.xo-ratio = appliedOverlay.xo-ratio;
                 packages.xo-pyutil = appliedOverlay.xo-pyutil;
                 packages.xo-reflect = appliedOverlay.xo-reflect;
                 packages.xo-pyreflect = appliedOverlay.xo-pyreflect;
@@ -252,6 +255,11 @@
                   (prev.callPackage ./pkgs/xo-reflectutil.nix { xo-cmake = xo-cmake;
                                                                 xo-flatstring = xo-flatstring; }).overrideAttrs
                     (old: { src = xo-flatstring-path; });
+
+                xo-ratio =
+                  (prev.callPackage ./pkgs/xo-ratio.nix { xo-cmake = xo-cmake;
+                                                                }).overrideAttrs
+                    (old: { src = xo-ratio-path; });
 
                 xo-pyutil =
                   (prev.callPackage ./pkgs/xo-pyutil.nix { xo-cmake = xo-cmake;
@@ -448,6 +456,7 @@
                   xo-ordinaltree = xo-ordinaltree;
                   xo-flatstring = xo-flatstring;
                   xo-reflectutil = xo-reflectutil;
+                  xo-ratio = xo-ratio;
                   xo-pyutil = xo-pyutil;
                   xo-reflect = xo-reflect;
                   xo-pyreflect = xo-pyreflect;
