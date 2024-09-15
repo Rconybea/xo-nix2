@@ -544,6 +544,7 @@
                             #prev.llvmPackages_16.clang-unwrapped
                             prev.ccache
 
+                            prev.chromium
                             #prev.anki
                             #prev.mesa
                             #prev.egl-wayland
