@@ -1,9 +1,9 @@
 {
   # nixpkgs dependencies
-  stdenv, cmake, catch2, # ... other deps here
+  stdenv, cmake, catch2, doxygen, sphinx, # ... other deps here
 
   # xo dependencies
-  xo-cmake,
+  xo-cmake, xo-indentlog
 
   # args
 
