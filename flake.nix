@@ -439,7 +439,8 @@
                   (prev.callPackage ./pkgs/xo-pyexpression.nix { xo-cmake = xo-cmake;
                                                                  xo-expression = xo-expression;
                                                                  xo-pyutil = xo-pyutil;
-                                                                 xo-pywebutil = xo-pywebutil;
+                                                                 xo-pyreflect = xo-pyreflect;
+                                                                 #xo-pywebutil = xo-pywebutil;
                                                                }).overrideAttrs
                     (old: { src = xo-pyexpression-path; });
 

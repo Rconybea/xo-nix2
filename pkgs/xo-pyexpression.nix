@@ -3,7 +3,7 @@
   stdenv, cmake, catch2, # ... other deps here
 
   # xo dependencies
-  xo-cmake, xo-pyutil, xo-expression,
+  xo-cmake, xo-pyutil, xo-expression, xo-pyreflect,
 
   # args
 
@@ -34,6 +34,6 @@ stdenv.mkDerivation (finalattrs:
                   "-DXO_CMAKE_CONFIG_EXECUTABLE=${xo-cmake}/bin/xo-cmake-config"];
     doCheck = true;
     nativeBuildInputs = [ cmake catch2 xo-pyutil ];
-    propagatedBuildInputs = [ xo-expression
+    propagatedBuildInputs = [ xo-expression xo-pyreflect
                             ];
   })
