@@ -424,8 +424,8 @@
                     (old: { src = xo-tokenizer-path; });
 
                 xo-expression =
-                  (prev.callPackage ./pkgs/xo-tokenizer.nix { xo-cmake = xo-cmake;
-                                                              #xo-indentlog = xo-indentlog;
+                  (prev.callPackage ./pkgs/xo-expression.nix { xo-cmake = xo-cmake;
+                                                              xo-reflect = xo-reflect;
                                                               #xo-websock = xo-websock;
                                                               #xo-pyutil = xo-pyutil;
                                                               #xo-pywebutil = xo-pywebutil;
