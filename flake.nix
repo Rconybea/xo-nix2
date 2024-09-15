@@ -254,7 +254,8 @@
                     (old: { src = xo-ordinaltree-path; });
 
                 xo-flatstring =
-                  (prev.callPackage ./pkgs/xo-flatstring.nix { xo-cmake = xo-cmake; }).overrideAttrs
+                  (prev.callPackage ./pkgs/xo-flatstring.nix { xo-cmake = xo-cmake;
+                                                               xo-indentlog = xo-indentlog; }).overrideAttrs
                     (old: { src = xo-flatstring-path; });
 
                 xo-reflectutil =
