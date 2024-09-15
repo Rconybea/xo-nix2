@@ -449,7 +449,8 @@
 
                 xo-reader =
                   (prev.callPackage ./pkgs/xo-reader.nix { xo-cmake = xo-cmake;
-                                                           #xo-expression = xo-expression;
+                                                           xo-tokenizer = xo-tokenizer;
+                                                           xo-expression = xo-expression;
                                                          }).overrideAttrs
                     (old: { src = xo-reader-path; });
 
@@ -488,6 +489,7 @@
                                                             xo-pywebsock = xo-pywebsock;
                                                             xo-tokenizer = xo-tokenizer;
                                                             xo-expression = xo-expression;
+                                                            xo-pyexpression = xo-pyexpression;
                                                             xo-reader = xo-reader;
                                                           }).overrideAttrs(old: {});
 

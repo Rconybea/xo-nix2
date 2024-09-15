@@ -3,7 +3,7 @@
   stdenv, cmake, catch2, # ... other deps here
 
   # xo dependencies
-  xo-cmake, #xo-indentlog, #xo-refcnt, xo-subsys,
+  xo-cmake, xo-tokenizer, xo-expression, #xo-indentlog, #xo-refcnt, xo-subsys,
 
   # args
 
@@ -34,6 +34,6 @@ stdenv.mkDerivation (finalattrs:
                   "-DXO_CMAKE_CONFIG_EXECUTABLE=${xo-cmake}/bin/xo-cmake-config"];
     doCheck = true;
     nativeBuildInputs = [ cmake catch2 ];
-    propagatedBuildInputs = [ #xo-indentlog #xo-subsys xo-refcnt
+    propagatedBuildInputs = [ xo-tokenizer xo-expression #xo-indentlog #xo-subsys xo-refcnt
     ];
   })
