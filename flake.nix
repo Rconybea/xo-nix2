@@ -265,7 +265,7 @@
 
                 xo-ratio =
                   (prev.callPackage ./pkgs/xo-ratio.nix { xo-cmake = xo-cmake;
-                                                                }).overrideAttrs
+                                                          xo-reflectutil = xo-reflectutil; }).overrideAttrs
                     (old: { src = xo-ratio-path; });
 
                 xo-pyutil =
@@ -444,6 +444,7 @@
                                                             xo-randomgen = xo-randomgen;
                                                             xo-ordinaltree = xo-ordinaltree;
                                                             xo-reflectutil = xo-reflectutil;
+                                                            xo-ratio = xo-ratio;
                                                             xo-pyutil = xo-pyutil;
                                                             xo-reflect = xo-reflect;
                                                             xo-pyreflect = xo-pyreflect;
