@@ -412,6 +412,7 @@
 
                 xo-tokenizer =
                   (prev.callPackage ./pkgs/xo-tokenizer.nix { xo-cmake = xo-cmake;
+                                                              xo-indentlog = xo-indentlog;
                                                               #xo-websock = xo-websock;
                                                               #xo-pyutil = xo-pyutil;
                                                               #xo-pywebutil = xo-pywebutil;
