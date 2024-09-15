@@ -89,6 +89,7 @@
   inputs.xo-pykalmanfilter-path = { type = "github"; owner = "Rconybea"; repo = "xo-pykalmanfilter"; flake = false; };
   inputs.xo-websock-path        = { type = "github"; owner = "Rconybea"; repo = "xo-websock";        flake = false; };
   inputs.xo-pywebsock-path      = { type = "github"; owner = "Rconybea"; repo = "xo-pywebsock";      flake = false; };
+  inputs.xo-tokenizer-path      = { type = "github"; owner = "Rconybea"; repo = "xo-tokenizer";      flake = false; };
   # placeholder-A
 
   outputs
@@ -125,6 +126,7 @@
       xo-pykalmanfilter-path,
       xo-websock-path,
       xo-pywebsock-path,
+      xo-tokenizer-path,
       # placeholder-B
     } :
       # out :: system -> {packages, devShells}
@@ -181,6 +183,7 @@
                 packages.xo-pykalmanfilter = appliedOverlay.xo-pykalmanfilter;
                 packages.xo-websock = appliedOverlay.xo-websock;
                 packages.xo-pywebsock = appliedOverlay.xo-pywebsock;
+                packages.xo-tokenizer = appliedOverlay.xo-tokenizer;
                 # placeholder-C
 
                 packages.xo-userenv = appliedOverlay.xo-userenv;
@@ -407,6 +410,14 @@
                                                             }).overrideAttrs
                     (old: { src = xo-pywebsock-path; });
 
+                xo-tokenizer =
+                  (prev.callPackage ./pkgs/xo-tokenizer.nix { xo-cmake = xo-cmake;
+                                                              #xo-websock = xo-websock;
+                                                              #xo-pyutil = xo-pyutil;
+                                                              #xo-pywebutil = xo-pywebutil;
+                                                            }).overrideAttrs
+                    (old: { src = xo-tokenizer-path; });
+
                 # placeholder-D
 
                 # user environment with all xo libraries present
@@ -438,6 +449,7 @@
                                                             xo-pykalmanfilter = xo-pykalmanfilter;
                                                             xo-websock = xo-websock;
                                                             xo-pywebsock = xo-pywebsock;
+                                                            xo-tokenizer = xo-tokenizer;
                                                           }).overrideAttrs(old: {});
 
 
@@ -478,6 +490,7 @@
                   xo-pykalmanfilter = xo-pykalmanfilter;
                   xo-websock = xo-websock;
                   xo-pywebsock = xo-pywebsock;
+                  xo-tokenizer = xo-tokenizer;
                   # placeholder-E
 
                   xo-userenv = xo-userenv;
