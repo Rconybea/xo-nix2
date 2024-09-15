@@ -30,9 +30,9 @@ stdenv.mkDerivation (finalattrs:
       #rev = "c0472c9d7e4d2c53bfb977d3182380832fe96645";
     });
 
-    cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo-cmake}/share/cmake"];
+    cmakeFlags = ["-DCMAKE_MODULE_PATH=${xo-cmake}/share/cmake -DXO_CMAKE_CONFIG_EXECUTABLE=${xo-cmake}/bin/xo-cmake-config"];
     doCheck = true;
-    nativeBuildInputs = [ cmake catch2 ];
-    propagatedBuildInputs = [ #xo-refcnt xo-randomgen
+    nativeBuildInputs = [ cmake catch2 doxygen sphinx ];
+    propagatedBuildInputs = [ xo-indentlog #xo-refcnt xo-randomgen
     ];
   })
