@@ -261,7 +261,7 @@
                 xo-reflectutil =
                   (prev.callPackage ./pkgs/xo-reflectutil.nix { xo-cmake = xo-cmake;
                                                                 xo-flatstring = xo-flatstring; }).overrideAttrs
-                    (old: { src = xo-flatstring-path; });
+                    (old: { src = xo-reflectutil-path; });
 
                 xo-ratio =
                   (prev.callPackage ./pkgs/xo-ratio.nix { xo-cmake = xo-cmake;
@@ -443,6 +443,7 @@
                                                             xo-refcnt = xo-refcnt;
                                                             xo-randomgen = xo-randomgen;
                                                             xo-ordinaltree = xo-ordinaltree;
+                                                            xo-reflectutil = xo-reflectutil;
                                                             xo-pyutil = xo-pyutil;
                                                             xo-reflect = xo-reflect;
                                                             xo-pyreflect = xo-pyreflect;
