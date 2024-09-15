@@ -90,6 +90,7 @@
   inputs.xo-websock-path        = { type = "github"; owner = "Rconybea"; repo = "xo-websock";        flake = false; };
   inputs.xo-pywebsock-path      = { type = "github"; owner = "Rconybea"; repo = "xo-pywebsock";      flake = false; };
   inputs.xo-tokenizer-path      = { type = "github"; owner = "Rconybea"; repo = "xo-tokenizer";      flake = false; };
+  inputs.xo-expression-path     = { type = "github"; owner = "Rconybea"; repo = "xo-expression";     flake = false; };
   # placeholder-A
 
   outputs
@@ -127,6 +128,7 @@
       xo-websock-path,
       xo-pywebsock-path,
       xo-tokenizer-path,
+      xo-expression-path,
       # placeholder-B
     } :
       # out :: system -> {packages, devShells}
@@ -184,6 +186,7 @@
                 packages.xo-websock = appliedOverlay.xo-websock;
                 packages.xo-pywebsock = appliedOverlay.xo-pywebsock;
                 packages.xo-tokenizer = appliedOverlay.xo-tokenizer;
+                packages.xo-expression = appliedOverlay.xo-expression;
                 # placeholder-C
 
                 packages.xo-userenv = appliedOverlay.xo-userenv;
@@ -419,6 +422,15 @@
                                                             }).overrideAttrs
                     (old: { src = xo-tokenizer-path; });
 
+                xo-expression =
+                  (prev.callPackage ./pkgs/xo-tokenizer.nix { xo-cmake = xo-cmake;
+                                                              #xo-indentlog = xo-indentlog;
+                                                              #xo-websock = xo-websock;
+                                                              #xo-pyutil = xo-pyutil;
+                                                              #xo-pywebutil = xo-pywebutil;
+                                                            }).overrideAttrs
+                    (old: { src = xo-expression-path; });
+
                 # placeholder-D
 
                 # user environment with all xo libraries present
@@ -451,6 +463,7 @@
                                                             xo-websock = xo-websock;
                                                             xo-pywebsock = xo-pywebsock;
                                                             xo-tokenizer = xo-tokenizer;
+                                                            xo-expression = xo-expression;
                                                           }).overrideAttrs(old: {});
 
 
@@ -492,6 +505,7 @@
                   xo-websock = xo-websock;
                   xo-pywebsock = xo-pywebsock;
                   xo-tokenizer = xo-tokenizer;
+                  xo-expression = xo-expression;
                   # placeholder-E
 
                   xo-userenv = xo-userenv;
