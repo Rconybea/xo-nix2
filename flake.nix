@@ -92,6 +92,7 @@
   inputs.xo-tokenizer-path      = { type = "github"; owner = "Rconybea"; repo = "xo-tokenizer";      flake = false; };
   inputs.xo-expression-path     = { type = "github"; owner = "Rconybea"; repo = "xo-expression";     flake = false; };
   inputs.xo-pyexpression-path   = { type = "github"; owner = "Rconybea"; repo = "xo-pyexpression";   flake = false; };
+  inputs.xo-reader-path         = { type = "github"; owner = "Rconybea"; repo = "xo-reader";         flake = false; };
   # placeholder-A
 
   outputs
@@ -131,6 +132,7 @@
       xo-tokenizer-path,
       xo-expression-path,
       xo-pyexpression-path,
+      xo-reader-path,
       # placeholder-B
     } :
       # out :: system -> {packages, devShells}
@@ -190,6 +192,7 @@
                 packages.xo-tokenizer = appliedOverlay.xo-tokenizer;
                 packages.xo-expression = appliedOverlay.xo-expression;
                 packages.xo-pyexpression = appliedOverlay.xo-pyexpression;
+                packages.xo-reader = appliedOverlay.xo-reader;
                 # placeholder-C
 
                 packages.xo-userenv = appliedOverlay.xo-userenv;
@@ -444,6 +447,12 @@
                                                                }).overrideAttrs
                     (old: { src = xo-pyexpression-path; });
 
+                xo-reader =
+                  (prev.callPackage ./pkgs/xo-reader.nix { xo-cmake = xo-cmake;
+                                                           #xo-expression = xo-expression;
+                                                         }).overrideAttrs
+                    (old: { src = xo-reader-path; });
+
                 # placeholder-D
 
                 # user environment with all xo libraries present
@@ -479,6 +488,7 @@
                                                             xo-pywebsock = xo-pywebsock;
                                                             xo-tokenizer = xo-tokenizer;
                                                             xo-expression = xo-expression;
+                                                            xo-reader = xo-reader;
                                                           }).overrideAttrs(old: {});
 
 
@@ -522,6 +532,7 @@
                   xo-tokenizer = xo-tokenizer;
                   xo-expression = xo-expression;
                   xo-pyexpression = xo-pyexpression;
+                  xo-reader = xo-reader;
                   # placeholder-E
 
                   xo-userenv = xo-userenv;
