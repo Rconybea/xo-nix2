@@ -24,8 +24,9 @@ stdenv.mkDerivation (finalattrs:
 
     src = (fetchGit {
       url = "https://github.com/rconybea/xo-cmake";
-      version = "1.0";
+      #version = "1.0";
       #ref = "ex1";
+      rev = "aff3e6461963d35a039b31f5caaaeae2ef122c76";
       #rev = "c0472c9d7e4d2c53bfb977d3182380832fe96645";
     });
 
