@@ -2,3 +2,32 @@
 
 - can't have a flake.nix nested in a subtree with another flake.nix at the root,
   get infinite sequence of updates to flake.lock file (tree always dirty)
+
+- to get debug failing build for a dir with a default.nix (or maybe a flake.nix?)
+
+   cd projecttobetested
+   nix-shell -E 'with import <nixpkgs> {}; callPackage ./. {}'
+
+  Then run the build phases
+
+- nix things
+
+$ cd xo-nix2
+$ nix repl
+> pkgs = import <nixpkgs> {}
+> pkgs.psmisc
+<<derivation...>>
+
+> xo-cmake = import ./pkgs/xo-cmake.nix
+> xo-cmake {}  # complains about required argument stdenv
+
+> :t <nixpkgs>
+a path
+> :t <nixpkgs> + "/pkgs/stdenv/native"
+a path
+> mypath = <nixpkgs> + "/pkgs/stdenv/native"
+> import mypath {}  # complains about missing localSystem
+
+> pkgs.callPackage ./pkgs/xo-expression.nix {}  # complains about required argument xo-cmake
+
+> pkgs.callPackage ./pkgs/xo-cmake.nix {}  # (given pkgs/xo-cmake.nix specifies 'rev' attribute :)
